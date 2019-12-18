@@ -1,6 +1,14 @@
 # DVMediaSelector
-[![](https://jitpack.io/v/Devil-Chen/DVMediaSelector.svg)](https://jitpack.io/#Devil-Chen/DVMediaSelector)
+[![](https://jitpack.io/v/Devil-Chen/DVMediaSelector.svg)](https://jitpack.io/#Devil-Chen/DVMediaSelector)  
+  
 Android媒体资源选择库（支持图片/视频/仿微信拍照、拍视频），非常简单使用，支持图库多选、单选、仿微信拍照拍视频、系统照相机拍照拍视频。
+
+## 预览
+![拍摄](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/take_photo.png)  
+![单选](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/single_select.png) 
+![预览大图](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/preview.png)  
+![多选](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/multiple_select.png)  
+![选择文件夹](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/folder_select.png)  
 
 ## 依赖
 **根bulid.gradle添加**
@@ -155,3 +163,6 @@ MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListene
     }
 });
 ```
+
+## 参考
+[https://github.com/CJT2325/CameraView](https://github.com/CJT2325/CameraView)
