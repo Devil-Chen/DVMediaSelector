@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">资源选择</string>
+
+    <string name="open_camera_failure">打开相机失败</string>
+
+    <string name="permission_denied_tip">请打开相关权限</string>
+
+</resources>
