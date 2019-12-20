@@ -23,12 +23,12 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.0'
 }
 ```
 
 ## 使用
-**自定义一个ImageLoader**
+**使用之前必须先自定义一个ImageLoader**
 ```
 //可使用Glide、Picasso等方式加载，由调用者自己决定
 //设置加载器
