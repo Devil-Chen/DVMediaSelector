@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.R;
@@ -35,6 +37,7 @@ import com.devil.library.media.utils.DisplayUtils;
 import com.devil.library.media.utils.FileUtils;
 import com.devil.library.media.utils.LayoutManagerHelper;
 import com.devil.library.media.utils.MediaDataUtils;
+import com.devil.library.media.utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -271,6 +274,40 @@ public class MediaListFragment extends Fragment {
         li_folder = new ArrayList<>();
         map_allMedia = new HashMap<>();
 
+        //检查权限并开始
+        checkPermissionAndStart();
+    }
+
+    /**
+     * 检查权限并开始
+     */
+    private void checkPermissionAndStart(){
+        //判断是否有权限操作
+        String[] permissions = PermissionUtils.arrayConcatAll(PermissionUtils.PERMISSION_CAMERA,PermissionUtils.PERMISSION_FILE_STORAGE,PermissionUtils.PERMISSION_MICROPHONE);
+        if (!PermissionUtils.verifyHasPermission(mContext,permissions)){
+            PermissionUtils.requestPermissions(mContext, permissions, new PermissionUtils.OnPermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                    //加载数据
+                    loadData();
+                }
+
+                @Override
+                public void onPermissionDenied() {
+                    Toast.makeText(mContext,getString(R.string.permission_denied_tip),Toast.LENGTH_SHORT).show();
+                    mContext.finish();
+                }
+            });
+        }else{
+            //加载数据
+            loadData();
+        }
+    }
+
+    /**
+     * 加载数据
+     */
+    public void loadData(){
         //判断配置类型
         if (config.mediaType == DVMediaType.PHOTO){//加载图片数据
             MediaDataUtils.getAllPhotoInfo(mContext, new MediaDataUtils.OnLoadCallBack() {

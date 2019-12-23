@@ -100,7 +100,7 @@ public class DVCameraActivity extends AppCompatActivity {
                 @Override
                 public void onPermissionDenied() {
                     showMessage(getString(R.string.permission_denied_tip));
-                    onBackPressed();
+                    finish();
                 }
             });
         }else{

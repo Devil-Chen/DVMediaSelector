@@ -11,11 +11,4 @@
     <!-- Base application theme. -->
     <style name="SelTheme" parent="BaseAppTheme"></style>
 
-    <style name="ActivityTheme" parent="BaseAppTheme">
-        <!-- 定义activity的进出场动画 -->
-        <item name="android:activityOpenEnterAnimation">@anim/enter_from_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/out_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/enter_from_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/out_to_right</item>
-    </style>
 </resources>

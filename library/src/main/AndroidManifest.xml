@@ -12,7 +12,7 @@
     <application>
         <activity
             android:name="com.devil.library.media.ui.activity.DVMediaSelectActivity"
-            android:theme="@style/ActivityTheme" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name="com.devil.library.media.ui.activity.DVSystemCameraActivity"

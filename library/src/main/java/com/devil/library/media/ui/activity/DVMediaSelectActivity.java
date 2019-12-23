@@ -93,8 +93,9 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         initView();
         //根据配置设置属性
         setUpConfig();
-        //检查权限并开始
-        checkPermissionAndStart();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_mediaList, mediaFragment, MediaListFragment.class.getName())
+                .commit();
     }
 
     /**
@@ -103,6 +104,7 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
     private void initView(){
         mediaFragment = MediaListFragment.instance();
 //        watchMediaFragment = WatchMediaFragment.instance();
+
         //找到控件
         btn_selectFolder = findViewById(R.id.btn_selectFolder);
         btn_sure = findViewById(R.id.btn_sure);
@@ -229,34 +231,6 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
             btn_sure.setBackgroundColor(config.sureBtnBgColor);
         }else if (config.sureBtnBgResource != 0){//确定按钮背景Resource
             btn_sure.setBackgroundResource(config.sureBtnBgResource);
-        }
-    }
-
-    /**
-     * 检查权限并开始
-     */
-    private void checkPermissionAndStart(){
-        //判断是否有权限操作
-        String[] permissions = PermissionUtils.arrayConcatAll(PermissionUtils.PERMISSION_CAMERA,PermissionUtils.PERMISSION_FILE_STORAGE,PermissionUtils.PERMISSION_MICROPHONE);
-        if (!PermissionUtils.verifyHasPermission(this,permissions)){
-            PermissionUtils.requestPermissions(this, permissions, new PermissionUtils.OnPermissionListener() {
-                @Override
-                public void onPermissionGranted() {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.fl_mediaList, mediaFragment, MediaListFragment.class.getName())
-                            .commit();
-                }
-
-                @Override
-                public void onPermissionDenied() {
-                    showMessage(getString(R.string.permission_denied_tip));
-                    onBackPressed();
-                }
-            });
-        }else{
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_mediaList, mediaFragment, MediaListFragment.class.getName())
-                    .commit();
         }
     }
 
