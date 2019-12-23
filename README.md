@@ -28,7 +28,7 @@ dependencies {
 ```
 
 ## 使用
-**使用之前必须先自定义一个ImageLoader**
+**使用之前先自定义一个ImageLoader，必须在调用选择文件之前调用此方法**
 ```
 //可使用Glide、Picasso等方式加载，由调用者自己决定
 //设置加载器
