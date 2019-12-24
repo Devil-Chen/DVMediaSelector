@@ -1,5 +1,6 @@
 package com.devil.library.media.listener;
 
+import com.devil.library.media.bean.FolderInfo;
 import com.devil.library.media.bean.MediaInfo;
 
 import java.util.ArrayList;
@@ -26,4 +27,10 @@ public interface OnItemClickListener{
      * @param position
      */
     boolean itemCheckEnabled(int position,boolean isChecked);
+
+    /**
+     * 右上角文件夹选择事件
+     * @param folderInfo
+     */
+    void onFolderCheck(FolderInfo folderInfo);
 }

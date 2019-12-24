@@ -215,6 +215,10 @@ public class MediaListFragment extends Fragment {
                 currentListContent.addAll(map_allMedia.get(li_folder.get(i).folderPath));
                 //更新界面
                 adapter.notifyDataSetChanged();
+                //回调
+                if (onItemClickListener != null){
+                    onItemClickListener.onFolderCheck(li_folder.get(i));
+                }
             }
         });
         folderPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

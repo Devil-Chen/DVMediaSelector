@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.R;
+import com.devil.library.media.bean.FolderInfo;
 import com.devil.library.media.bean.MediaInfo;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.listener.OnItemClickListener;
@@ -194,13 +195,6 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         }else{
             fileCachePath = config.fileCachePath;
         }
-        //如果是选择图片
-        if (config.mediaType == DVMediaType.PHOTO){
-            btn_selectFolder.setText("所有图片");
-        }else{
-            btn_selectFolder.setText("所有文件");
-
-        }
         //右边标题内容
         if (!TextUtils.isEmpty(config.rigntTitleText)){
             btn_selectFolder.setText(config.rigntTitleText);
@@ -366,6 +360,15 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         }else {
             return true;
         }
+    }
+
+    /**
+     * 右上角文件夹选择事件
+     * @param folderInfo
+     */
+    @Override
+    public void onFolderCheck(FolderInfo folderInfo){
+        btn_selectFolder.setText(""+folderInfo.folderName);
     }
 
     // ---------------------------------------------- 裁剪图片 --------------------------------------------------

@@ -40,7 +40,7 @@
             android:layout_marginRight="8dp"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="所有图片"
+            android:text="所有文件"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 

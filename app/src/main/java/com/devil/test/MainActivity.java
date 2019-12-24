@@ -15,7 +15,7 @@ import com.devil.library.media.listener.OnSelectMediaListener;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
-import com.devil.library.media.utils.FileUtils;
+
 
 import java.util.List;
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 //确定按钮所在布局背景色（与color只能选择一种）
                 .sureBtnBgResource(R.drawable.shape_btn_default)
                 //设置文件临时缓存路径
-                .fileCachePath(FileUtils.createRootPath(this));
+                .fileCachePath(this.getCacheDir().getPath());
 
         //打开界面
         MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {

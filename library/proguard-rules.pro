@@ -31,13 +31,14 @@
 
 #---------------------------------默认保留区---------------------------------
 -keep public class * extends android.app.Activity
+-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.view.View
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
--keep public class * extends android.view.View
 -keep public class com.android.vending.licensing.ILicensingService
 -keep class android.support.** {*;}
 
@@ -101,4 +102,5 @@
 -keep public class com.devil.library.media.common.ImageLoader { *; }
 -keep public class com.devil.library.media.listener.OnSelectMediaListener { *; }
 -keep public class com.devil.library.media.enumtype.* { *; }
--keep public class com.devil.library.media.utils.* { *; }
+-keep public class com.devil.library.media.utils.PermissionUtils { *; }
+-keep public class com.devil.library.media.utils.DVFileProvider { *; }
