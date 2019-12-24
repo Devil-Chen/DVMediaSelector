@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,14 +25,13 @@ import com.devil.library.media.R;
 import com.devil.library.media.bean.MediaInfo;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.listener.OnItemClickListener;
-import com.devil.library.media.common.MediaSetupListener;
+import com.devil.library.media.common.MediaTempListener;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
 import com.devil.library.media.ui.fragment.MediaListFragment;
 import com.devil.library.media.ui.fragment.WatchMediaFragment;
 import com.devil.library.media.utils.FileUtils;
 import com.devil.library.media.utils.MediaFileTypeUtils;
-import com.devil.library.media.utils.PermissionUtils;
 import com.devil.library.media.utils.StatusBarUtil;
 
 import java.io.File;
@@ -267,8 +265,8 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
             intent.putStringArrayListExtra("result", li_path);
         }
         setResult(RESULT_OK, intent);
-        if (MediaSetupListener.listener != null){
-            MediaSetupListener.listener.onSelectMedia(li_path);
+        if (MediaTempListener.listener != null){
+            MediaTempListener.listener.onSelectMedia(li_path);
         }
         finish();
     }
@@ -319,7 +317,7 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
             cameraConfig.mediaType = config.mediaType;
             cameraConfig.needCrop = config.needCrop;
             cameraConfig.cropSize(config.aspectX,config.aspectY,config.outputX,config.outputY);
-            MediaSelectorManager.openCameraWithConfig(mContext,cameraConfig,MediaSetupListener.listener);
+            MediaSelectorManager.openCameraWithConfig(mContext,cameraConfig, MediaTempListener.listener);
 
             finish();
             return;
@@ -451,7 +449,7 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
                 map_cacheSelectInfo = null;
             }
             MediaSelectorManager.getInstance().clean();
-            MediaSetupListener.release();
+            MediaTempListener.release();
         }
     }
 

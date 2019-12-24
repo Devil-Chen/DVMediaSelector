@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.devil.library.media.R;
 import com.devil.library.media.MediaSelectorManager;
-import com.devil.library.media.common.MediaSetupListener;
+import com.devil.library.media.common.MediaTempListener;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.enumtype.DVMediaType;
 import com.devil.library.media.utils.FileUtils;
@@ -245,10 +245,10 @@ public class DVSystemCameraActivity extends AppCompatActivity {
             intent.putExtra("result", filePath);
         }
         setResult(RESULT_OK, intent);
-        if (MediaSetupListener.listener != null){
+        if (MediaTempListener.listener != null){
             ArrayList<String> li_path = new ArrayList<>();
             li_path.add(filePath);
-            MediaSetupListener.listener.onSelectMedia(li_path);
+            MediaTempListener.listener.onSelectMedia(li_path);
         }
         onBackPressed();
     }
@@ -302,6 +302,6 @@ public class DVSystemCameraActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         MediaSelectorManager.getInstance().clean();
-        MediaSetupListener.release();
+        MediaTempListener.release();
     }
 }

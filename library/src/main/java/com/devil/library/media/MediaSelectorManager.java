@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.devil.library.media.common.ImageLoader;
 import com.devil.library.media.listener.OnSelectMediaListener;
-import com.devil.library.media.common.MediaSetupListener;
+import com.devil.library.media.common.MediaTempListener;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
@@ -172,7 +172,7 @@ public class MediaSelectorManager {
         Intent intent = new Intent(mActivity, DVMediaSelectActivity.class);
 
         MediaSelectorManager.getInstance().currentListConfig = config;
-        MediaSetupListener.setOnSelectMediaListener(listener);
+        MediaTempListener.setOnSelectMediaListener(listener);
         intent.putExtra("action","mediaList");
 
         startActivityRightToLeft(mActivity,intent);
@@ -187,7 +187,7 @@ public class MediaSelectorManager {
 
         MediaSelectorManager.getInstance().currentListConfig = getDefaultListConfig();
         MediaSelectorManager.getInstance().currentListConfig.mediaType = mediaType;
-        MediaSetupListener.setOnSelectMediaListener(listener);
+        MediaTempListener.setOnSelectMediaListener(listener);
         intent.putExtra("action","mediaList");
 
         startActivityRightToLeft(mActivity,intent);
@@ -205,7 +205,7 @@ public class MediaSelectorManager {
             intent.setClass(mActivity,DVCameraActivity.class);
         }
         MediaSelectorManager.getInstance().currentCameraConfig = config;
-        MediaSetupListener.setOnSelectMediaListener(listener);
+        MediaTempListener.setOnSelectMediaListener(listener);
         intent.putExtra("action","camera");
 
         startActivityBottomToTop(mActivity,intent);
@@ -221,7 +221,7 @@ public class MediaSelectorManager {
         MediaSelectorManager.getInstance().currentCameraConfig = getDefaultCameraConfig();
         MediaSelectorManager.getInstance().currentCameraConfig.mediaType = mediaType;
 
-        MediaSetupListener.setOnSelectMediaListener(listener);
+        MediaTempListener.setOnSelectMediaListener(listener);
         intent.putExtra("action","camera");
 
         startActivityBottomToTop(mActivity,intent);

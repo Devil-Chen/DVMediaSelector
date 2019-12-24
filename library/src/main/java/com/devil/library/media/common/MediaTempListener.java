@@ -5,7 +5,7 @@ import com.devil.library.media.listener.OnSelectMediaListener;
 /**
  * 设置回调监听者（临时）
  */
-public class MediaSetupListener {
+public class MediaTempListener {
     //回调监听
     public static OnSelectMediaListener listener;
 

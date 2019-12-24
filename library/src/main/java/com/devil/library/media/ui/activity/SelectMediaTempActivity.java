@@ -19,7 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.devil.library.media.common.MediaSetupListener;
+import com.devil.library.media.common.MediaTempListener;
 import com.devil.library.media.listener.OnSelectMediaListener;
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.R;
@@ -398,7 +398,7 @@ public class SelectMediaTempActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         MediaSelectorManager.getInstance().clean();
-        MediaSetupListener.release();
+        MediaTempListener.release();
     }
 
 }

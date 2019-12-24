@@ -99,5 +99,6 @@
 -keep public class com.devil.library.media.config.DVCameraConfig{ *; }
 -keep public class com.devil.library.media.config.DVListConfig{ *; }
 -keep public class com.devil.library.media.common.ImageLoader { *; }
--keep public class com.devil.library.media.listener.* { *; }
+-keep public class com.devil.library.media.listener.OnSelectMediaListener { *; }
 -keep public class com.devil.library.media.enumtype.* { *; }
+-keep public class com.devil.library.media.utils.* { *; }
