@@ -102,5 +102,4 @@
 -keep public class com.devil.library.media.common.ImageLoader { *; }
 -keep public class com.devil.library.media.listener.OnSelectMediaListener { *; }
 -keep public class com.devil.library.media.enumtype.* { *; }
--keep public class com.devil.library.media.utils.PermissionUtils { *; }
 -keep public class com.devil.library.media.utils.DVFileProvider { *; }

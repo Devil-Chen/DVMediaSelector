@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.R;
 import com.devil.library.media.bean.MediaInfo;
+import com.devil.library.media.ui.activity.DVEasyVideoPlayActivity;
 import com.devil.library.media.utils.MediaFileTypeUtils;
 import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
@@ -22,7 +23,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 /**
  * 默认资源浏览Fragment（每个Fragment显示一个）
  */
-public class WatchMediaVPItemFragment extends Fragment {
+public class WatchMediaVPItemFragment extends Fragment implements View.OnClickListener{
     //上下问
     private Activity mContext;
 
@@ -67,6 +68,8 @@ public class WatchMediaVPItemFragment extends Fragment {
     private void initView(){
         iv_photo = findViewById(R.id.iv_photo);
         iv_videoPlayIcon = findViewById(R.id.iv_videoPlayIcon);
+
+        iv_videoPlayIcon.setOnClickListener(this);
     }
 
     /**
@@ -108,5 +111,12 @@ public class WatchMediaVPItemFragment extends Fragment {
             return mContentView.findViewById(id);
         }
         return null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_videoPlayIcon){
+            DVEasyVideoPlayActivity.openVideo(mContext,mediaInfo.filePath);
+        }
     }
 }

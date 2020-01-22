@@ -33,13 +33,17 @@
 
         <Button
             android:id="@+id/btn_selectFolder"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/tv_title"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:background="@android:color/transparent"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
+            android:textAllCaps="false"
+            android:lines="1"
+            android:ellipsize="end"
             android:text="所有文件"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

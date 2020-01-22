@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ import com.devil.library.media.utils.DisplayUtils;
 import com.devil.library.media.utils.FileUtils;
 import com.devil.library.media.utils.LayoutManagerHelper;
 import com.devil.library.media.utils.MediaDataUtils;
-import com.devil.library.media.utils.PermissionUtils;
+import com.miyouquan.library.DVPermissionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -287,9 +286,9 @@ public class MediaListFragment extends Fragment {
      */
     private void checkPermissionAndStart(){
         //判断是否有权限操作
-        String[] permissions = PermissionUtils.arrayConcatAll(PermissionUtils.PERMISSION_CAMERA,PermissionUtils.PERMISSION_FILE_STORAGE,PermissionUtils.PERMISSION_MICROPHONE);
-        if (!PermissionUtils.verifyHasPermission(mContext,permissions)){
-            PermissionUtils.requestPermissions(mContext, permissions, new PermissionUtils.OnPermissionListener() {
+        String[] permissions = DVPermissionUtils.arrayConcatAll(DVPermissionUtils.PERMISSION_CAMERA,DVPermissionUtils.PERMISSION_FILE_STORAGE,DVPermissionUtils.PERMISSION_MICROPHONE);
+        if (!DVPermissionUtils.verifyHasPermission(mContext,permissions)){
+            DVPermissionUtils.requestPermissions(mContext, permissions, new DVPermissionUtils.OnPermissionListener() {
                 @Override
                 public void onPermissionGranted() {
                     //加载数据

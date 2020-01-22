@@ -23,11 +23,12 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
-            android:name="com.devil.library.media.ui.activity.SelectMediaTempActivity"
+            android:name="com.devil.library.media.ui.activity.DVEasyVideoPlayActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".utils.PermissionUtils$RequestPermissionsActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity
+            android:name="com.devil.library.media.ui.activity.SelectMediaTempActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
             android:name="APP_ID"

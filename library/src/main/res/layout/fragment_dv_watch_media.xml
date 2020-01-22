@@ -31,7 +31,7 @@
             android:button="@null"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@mipmap/icon_dv_unchecked"
+            android:src="@mipmap/icon_dv_unchecked"
             />
     </LinearLayout>
 </RelativeLayout>

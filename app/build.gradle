@@ -31,7 +31,9 @@ dependencies {
 
 //    implementation project(':library')
 //    implementation (name: 'mediaselector-release', ext: 'aar')
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.5'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.6'
 
     implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.github.Devil-Chen:DVPermissionHelper:v1.0.1'
 }

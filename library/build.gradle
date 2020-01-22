@@ -40,6 +40,7 @@ dependencies {
 
     //第三方库
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.github.Devil-Chen:DVPermissionHelper:v1.0.1'
 //    implementation 'cjt.library.wheel:camera:1.1.9'
 }
 

@@ -27,7 +27,7 @@ import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
 import com.devil.library.media.utils.FileUtils;
-import com.devil.library.media.utils.PermissionUtils;
+import com.miyouquan.library.DVPermissionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -226,9 +226,9 @@ public class SelectMediaTempActivity extends AppCompatActivity {
             fileCachePath = cameraConfig.fileCachePath;
         }
         //判断是否有权限操作
-        String[] permissions = PermissionUtils.arrayConcatAll(PermissionUtils.PERMISSION_CAMERA,PermissionUtils.PERMISSION_FILE_STORAGE,PermissionUtils.PERMISSION_MICROPHONE);
-        if (!PermissionUtils.verifyHasPermission(this,permissions)){
-            PermissionUtils.requestPermissions(this, permissions, new PermissionUtils.OnPermissionListener() {
+        String[] permissions = DVPermissionUtils.arrayConcatAll(DVPermissionUtils.PERMISSION_CAMERA,DVPermissionUtils.PERMISSION_FILE_STORAGE,DVPermissionUtils.PERMISSION_MICROPHONE);
+        if (!DVPermissionUtils.verifyHasPermission(this,permissions)){
+            DVPermissionUtils.requestPermissions(this, permissions, new DVPermissionUtils.OnPermissionListener() {
                 @Override
                 public void onPermissionGranted() {
                     //开启相机
