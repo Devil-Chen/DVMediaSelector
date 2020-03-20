@@ -14,11 +14,23 @@
         android:layout_height="wrap_content"
         android:onClick="defaultConfigMultiSelect"
         android:text="默认配置多选测试" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="multiSelectNoPreview"
+        android:text="默认配置不要预览多选测试" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="multiSelect"
         android:text="自定义多选测试" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="multiSelectVideo"
+        android:text="多选视频测试" />
+
 
     <Button
         android:layout_width="wrap_content"

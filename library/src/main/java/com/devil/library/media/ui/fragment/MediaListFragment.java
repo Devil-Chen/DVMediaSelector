@@ -188,6 +188,14 @@ public class MediaListFragment extends Fragment {
     }
 
     /**
+     * 刷新某个位置的数据
+     */
+    public void refreshData(int position){
+        if (adapter != null)
+            adapter.notifyItemChanged(position);
+    }
+
+    /**
      * 创建文件
      * @param anchorView
      * @param width

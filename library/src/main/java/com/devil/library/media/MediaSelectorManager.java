@@ -87,7 +87,7 @@ public class MediaSelectorManager {
      */
     public DVListConfig getCurrentListConfig() {
         if (currentListConfig == null){
-            currentListConfig = getDefaultListConfig();
+            currentListConfig = getDefaultListConfigBuilder().build();
         }
         return currentListConfig;
     }
@@ -98,7 +98,7 @@ public class MediaSelectorManager {
      */
     public DVCameraConfig getCurrentCameraConfig(){
         if (currentCameraConfig == null){
-            currentCameraConfig = getDefaultCameraConfig();
+            currentCameraConfig = getDefaultCameraConfigBuild().build();
         }
         return currentCameraConfig;
     }
@@ -116,8 +116,8 @@ public class MediaSelectorManager {
      * 获取默认的列表选择配置
      * @return
      */
-    public static DVListConfig getDefaultListConfig(){
-       return   DVListConfig.createInstance()
+    public static DVListConfig.Builder getDefaultListConfigBuilder(){
+       return   new DVListConfig.Builder()
                 // 是否多选, 默认true
                 .multiSelect(true)
                 // “确定”按钮背景色
@@ -140,8 +140,8 @@ public class MediaSelectorManager {
      * 获取默认的相机选择配置
      * @return
      */
-    public static DVCameraConfig getDefaultCameraConfig(){
-        return DVCameraConfig.createInstance();
+    public static DVCameraConfig.Builder getDefaultCameraConfigBuild(){
+        return new DVCameraConfig.Builder();
     }
 
     /**
@@ -185,7 +185,7 @@ public class MediaSelectorManager {
     public static void openSelectMediaWithMediaType(Activity mActivity, DVMediaType mediaType, OnSelectMediaListener listener){
         Intent intent = new Intent(mActivity, DVMediaSelectActivity.class);
 
-        MediaSelectorManager.getInstance().currentListConfig = getDefaultListConfig();
+        MediaSelectorManager.getInstance().currentListConfig = getDefaultListConfigBuilder().build();
         MediaSelectorManager.getInstance().currentListConfig.mediaType = mediaType;
         MediaTempListener.setOnSelectMediaListener(listener);
         intent.putExtra("action","mediaList");
@@ -218,7 +218,7 @@ public class MediaSelectorManager {
     public static void openCameraWithMediaType(Activity mActivity,DVMediaType mediaType, OnSelectMediaListener listener){
         Intent intent = new Intent(mActivity, DVCameraActivity.class);
 
-        MediaSelectorManager.getInstance().currentCameraConfig = getDefaultCameraConfig();
+        MediaSelectorManager.getInstance().currentCameraConfig = getDefaultCameraConfigBuild().build();
         MediaSelectorManager.getInstance().currentCameraConfig.mediaType = mediaType;
 
         MediaTempListener.setOnSelectMediaListener(listener);

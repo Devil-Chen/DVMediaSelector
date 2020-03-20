@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(context).load(path).into(imageView);
             }
         });
+
     }
 
     /**
@@ -48,7 +49,24 @@ public class MainActivity extends AppCompatActivity {
      */
     public void defaultConfigMultiSelect(View view){
         //打开界面
-        MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDefaultListConfig(), new OnSelectMediaListener() {
+        MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDefaultListConfigBuilder().build(), new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+                for (String path : li_path) {
+                    tvResult.append(path + "\n");
+                }
+            }
+        });
+    }
+
+    /**
+     * 默认配置不要预览的多选测试
+     */
+    public void multiSelectNoPreview(View view){
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                .hasPreview(false).build();
+        //打开界面
+        MediaSelectorManager.openSelectMediaWithConfig(this,config, new OnSelectMediaListener() {
             @Override
             public void onSelectMedia(List<String> li_path) {
                 for (String path : li_path) {
@@ -64,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void multiSelect(View view) {
         tvResult.setText("");
-        DVListConfig config = MediaSelectorManager.getDefaultListConfig()
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
                 //是否多选
                 .multiSelect(true)
                 //最大选择数量
@@ -107,10 +125,31 @@ public class MainActivity extends AppCompatActivity {
                 //确定按钮所在布局背景色（与color只能选择一种）
                 .sureBtnBgResource(R.drawable.shape_btn_default)
                 //设置文件临时缓存路径
-                .fileCachePath(this.getCacheDir().getPath());
+                .fileCachePath(this.getCacheDir().getPath())
+                //设置是否包含预览
+                .hasPreview(true)
+                .build();
 
         //打开界面
         MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+                for (String path : li_path) {
+                    tvResult.append(path + "\n");
+                }
+            }
+        });
+    }
+
+    /**
+     * 多选视频测试
+     */
+    public void multiSelectVideo(View view){
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                .mediaType(DVMediaType.VIDEO)
+                .hasPreview(true).build();
+        //打开界面
+        MediaSelectorManager.openSelectMediaWithConfig(this,config, new OnSelectMediaListener() {
             @Override
             public void onSelectMedia(List<String> li_path) {
                 for (String path : li_path) {
@@ -126,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void singleSelect(View view) {
         tvResult.setText("");
-        DVListConfig config = DVListConfig.createInstance()
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
                 // 是否多选
                 .multiSelect(false)
                 //第一个菜单是否显示照相机
@@ -146,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
                 //是否需要裁剪
                 .needCrop(true)
                 //裁剪大小
-                .cropSize(1, 1, 200, 200);
+                .cropSize(1, 1, 200, 200)
+                .build();
 
         MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {
             @Override
@@ -164,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void openCamera(View view) {
         tvResult.setText("");
-        DVCameraConfig config = DVCameraConfig.createInstance()
+        DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuild()
                 //是否使用系统照相机（默认使用仿微信照相机）
                 .isUseSystemCamera(false)
                 //是否需要裁剪
@@ -172,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
                 //裁剪大小
                 .cropSize(1, 1, 200, 200)
                 //媒体类型
-                .mediaType(DVMediaType.ALL);
+                .mediaType(DVMediaType.ALL)
+                .build();
 
         MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {
             @Override

@@ -21,7 +21,7 @@ import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 
 /**
- * 默认资源浏览Fragment（每个Fragment显示一个）
+ * 默认资源浏览Fragment（每个Fragment显示一个）（放大图片/打开播放视频）
  */
 public class WatchMediaVPItemFragment extends Fragment implements View.OnClickListener{
     //上下问

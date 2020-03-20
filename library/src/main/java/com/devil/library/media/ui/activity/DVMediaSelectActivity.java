@@ -306,11 +306,12 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         if (position == -1){//点击列表的照相机
             needCleanWithFinish = false;
 
-            DVCameraConfig cameraConfig = MediaSelectorManager.getDefaultCameraConfig();
-            cameraConfig.fileCachePath = config.fileCachePath;
-            cameraConfig.mediaType = config.mediaType;
-            cameraConfig.needCrop = config.needCrop;
-            cameraConfig.cropSize(config.aspectX,config.aspectY,config.outputX,config.outputY);
+            DVCameraConfig cameraConfig = MediaSelectorManager.getDefaultCameraConfigBuild()
+                    .fileCachePath(config.fileCachePath)
+                    .mediaType(config.mediaType)
+                    .needCrop(config.needCrop)
+                    .cropSize(config.aspectX,config.aspectY,config.outputX,config.outputY)
+                    .build();
             MediaSelectorManager.openCameraWithConfig(mContext,cameraConfig, MediaTempListener.listener);
 
             finish();
@@ -318,18 +319,23 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         }
         //判断单选还是多选
         if (config.multiSelect){//多选
-            WatchMediaFragment watchMediaFragment = WatchMediaFragment.instance();
-            watchMediaFragment.setOnItemClickListener(this);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("mediaInfos",li_AllInfo);
-            bundle.putInt("firstPosition",position);
-            watchMediaFragment.setArguments(bundle);
+            if (config.hasPreview) {//是否需要预览
+                WatchMediaFragment watchMediaFragment = WatchMediaFragment.instance();
+                watchMediaFragment.setOnItemClickListener(this);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("mediaInfos", li_AllInfo);
+                bundle.putInt("firstPosition", position);
+                watchMediaFragment.setArguments(bundle);
 
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.anim_show_alpha,R.anim.anim_hidden_alpha)
-                    .add(R.id.fl_mediaList, watchMediaFragment, WatchMediaFragment.class.getName())
-                    .addToBackStack(WatchMediaFragment.class.getName())
-                    .commit();
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.anim_show_alpha, R.anim.anim_hidden_alpha)
+                        .add(R.id.fl_mediaList, watchMediaFragment, WatchMediaFragment.class.getName())
+                        .addToBackStack(WatchMediaFragment.class.getName())
+                        .commit();
+            }else {
+                onItemCheck(li_AllInfo.get(position),map_cacheSelectInfo.get(li_AllInfo.get(position).filePath) == null);
+                mediaFragment.refreshData(position);
+            }
         }else{//单选
             String filePath = li_AllInfo.get(position).filePath;
             if (config.needCrop && !MediaFileTypeUtils.isVideoFileType(filePath)){//需要裁剪且不是视频文件

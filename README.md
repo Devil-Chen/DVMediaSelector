@@ -23,7 +23,7 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.7'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.8'
 }
 ```
 
@@ -43,7 +43,7 @@ MediaSelectorManager.getInstance().initImageLoader(new ImageLoader() {
 **多选**
 ```
 //最简单的调用
-MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDefaultListConfig(), new OnSelectMediaListener() {
+MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDefaultListConfigBuilder().build(), new OnSelectMediaListener() {
     @Override
     public void onSelectMedia(List<String> li_path) {
         for (String path : li_path) {
@@ -53,7 +53,7 @@ MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDef
 });
 
 //自定义配置调用
-DVListConfig config = MediaSelectorManager.getDefaultListConfig()
+DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
 //是否多选
 .multiSelect(true)
 //最大选择数量
@@ -96,7 +96,10 @@ DVListConfig config = MediaSelectorManager.getDefaultListConfig()
 //确定按钮所在布局背景色（与color只能选择一种）
 .sureBtnBgResource(R.drawable.shape_btn_default)
 //设置文件临时缓存路径
-.fileCachePath(FileUtils.createRootPath(this));
+.fileCachePath(FileUtils.createRootPath(this))
+//设置是否包含预览
+.hasPreview(true)
+.build();
 
 //打开界面
 MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {
@@ -110,7 +113,7 @@ MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaLi
 ```
 **单选**
 ```
-DVListConfig config = DVListConfig.createInstance()
+DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
 // 是否多选
 .multiSelect(false)
 //第一个菜单是否显示照相机
@@ -130,7 +133,8 @@ DVListConfig config = DVListConfig.createInstance()
 //是否需要裁剪
 .needCrop(true)
 //裁剪大小
-.cropSize(1, 1, 200, 200);
+.cropSize(1, 1, 200, 200)
+.build();
 
 MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {
 @Override
@@ -144,7 +148,7 @@ public void onSelectMedia(List<String> li_path) {
 
 **照相机**
 ```
-DVCameraConfig config = DVCameraConfig.createInstance()
+DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuild()
 //是否使用系统照相机（默认使用仿微信照相机）
 .isUseSystemCamera(false)
 //是否需要裁剪
@@ -152,7 +156,8 @@ DVCameraConfig config = DVCameraConfig.createInstance()
 //裁剪大小
 .cropSize(1, 1, 200, 200)
 //媒体类型
-.mediaType(DVMediaType.ALL);
+.mediaType(DVMediaType.ALL)
+.build();
 
 MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {
     @Override

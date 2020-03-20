@@ -26,7 +26,7 @@ import com.devil.library.media.view.HackyViewPager;
 import java.util.List;
 
 /**
- * 查看资源详情（放大图片/播放视频）
+ * 查看资源详情（viewPager）
  */
 public class WatchMediaFragment extends Fragment implements View.OnClickListener{
     //上下文
@@ -117,13 +117,7 @@ public class WatchMediaFragment extends Fragment implements View.OnClickListener
 
                 tv_pageTip.setText((i + 1)+"/"+li_mediaInfo.size());
                 //设置是否选中
-                if (DVMediaSelectActivity.map_cacheSelectInfo.containsKey(li_mediaInfo.get(i).filePath)){
-                    int checkIcon = config.checkIconResource != 0 ? config.checkIconResource : R.mipmap.icon_dv_checked;
-                    iv_check.setImageResource(checkIcon);
-                }else{
-                    int unCheckIcon = config.unCheckIconResource != 0 ? config.unCheckIconResource : R.mipmap.icon_dv_unchecked;
-                    iv_check.setImageResource(unCheckIcon);
-                }
+                setCheckedStatus(i);
             }
 
             @Override
@@ -144,7 +138,23 @@ public class WatchMediaFragment extends Fragment implements View.OnClickListener
         tv_pageTip.setText((firstPosition+1)+"/"+li_mediaInfo.size());
 
         vp_content.setCurrentItem(firstPosition);
+        //设置是否选中
+        setCheckedStatus(firstPosition);
 
+    }
+
+    /**
+     * 设置选中/非选中状态
+     */
+    private void setCheckedStatus(int position){
+        //设置是否选中
+        if (DVMediaSelectActivity.map_cacheSelectInfo.containsKey(li_mediaInfo.get(position).filePath)){
+            int checkIcon = config.checkIconResource != 0 ? config.checkIconResource : R.mipmap.icon_dv_checked;
+            iv_check.setImageResource(checkIcon);
+        }else{
+            int unCheckIcon = config.unCheckIconResource != 0 ? config.unCheckIconResource : R.mipmap.icon_dv_unchecked;
+            iv_check.setImageResource(unCheckIcon);
+        }
     }
 
     @Override

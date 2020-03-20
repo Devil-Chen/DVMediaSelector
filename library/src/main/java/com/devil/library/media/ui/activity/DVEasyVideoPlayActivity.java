@@ -76,6 +76,7 @@ public class DVEasyVideoPlayActivity  extends AppCompatActivity implements View.
         rl_back = findViewById(R.id.rl_back);
 
         rl_back.setOnClickListener(this);
+
     }
 
     /**
