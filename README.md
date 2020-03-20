@@ -70,11 +70,11 @@ DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
 .listSpanCount(3)
 //状态栏的mode
 .statusBarLightMode(true)
-//                .statusBarDrakMode(true)
+//.statusBarDrakMode(true)
 //设置选择资源的类型
 .mediaType(DVMediaType.ALL)
 //设置返回图标
-//                .backResourceId(R.mipmap.icon_back)
+//.backResourceId(R.mipmap.icon_back)
 //设置右边标题
 .rigntTitleText("所有图片")
 //设置右边标题文字颜色
@@ -92,7 +92,7 @@ DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
 //确定按钮文字颜色
 .sureBtnTextColor(Color.WHITE)
 //确定按钮背景色（与Resource只能选择一种）
-//                .sureBtnBgColor(Color.BLUE)
+//.sureBtnBgColor(Color.BLUE)
 //确定按钮所在布局背景色（与color只能选择一种）
 .sureBtnBgResource(R.drawable.shape_btn_default)
 //设置文件临时缓存路径

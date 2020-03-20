@@ -98,7 +98,7 @@ public class MediaSelectorManager {
      */
     public DVCameraConfig getCurrentCameraConfig(){
         if (currentCameraConfig == null){
-            currentCameraConfig = getDefaultCameraConfigBuild().build();
+            currentCameraConfig = getDefaultCameraConfigBuilder().build();
         }
         return currentCameraConfig;
     }
@@ -140,7 +140,7 @@ public class MediaSelectorManager {
      * 获取默认的相机选择配置
      * @return
      */
-    public static DVCameraConfig.Builder getDefaultCameraConfigBuild(){
+    public static DVCameraConfig.Builder getDefaultCameraConfigBuilder(){
         return new DVCameraConfig.Builder();
     }
 
@@ -218,7 +218,7 @@ public class MediaSelectorManager {
     public static void openCameraWithMediaType(Activity mActivity,DVMediaType mediaType, OnSelectMediaListener listener){
         Intent intent = new Intent(mActivity, DVCameraActivity.class);
 
-        MediaSelectorManager.getInstance().currentCameraConfig = getDefaultCameraConfigBuild().build();
+        MediaSelectorManager.getInstance().currentCameraConfig = getDefaultCameraConfigBuilder().build();
         MediaSelectorManager.getInstance().currentCameraConfig.mediaType = mediaType;
 
         MediaTempListener.setOnSelectMediaListener(listener);

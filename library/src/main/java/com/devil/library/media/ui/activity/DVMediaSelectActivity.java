@@ -306,7 +306,7 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
         if (position == -1){//点击列表的照相机
             needCleanWithFinish = false;
 
-            DVCameraConfig cameraConfig = MediaSelectorManager.getDefaultCameraConfigBuild()
+            DVCameraConfig cameraConfig = MediaSelectorManager.getDefaultCameraConfigBuilder()
                     .fileCachePath(config.fileCachePath)
                     .mediaType(config.mediaType)
                     .needCrop(config.needCrop)
