@@ -58,10 +58,6 @@ public class DVCameraActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        //设置全屏
-        fullScreen();
-        //设置布局
-        setContentView(R.layout.activity_dv_camera);
 
         //获取配置
         config = MediaSelectorManager.getInstance().getCurrentCameraConfig();
@@ -70,6 +66,11 @@ public class DVCameraActivity extends AppCompatActivity {
             onBackPressed();
             return;
         }
+
+        //设置全屏
+        fullScreen();
+        //设置布局
+        setContentView(R.layout.activity_dv_camera);
 
         //设置文件缓存路径
         if (TextUtils.isEmpty(config.fileCachePath)){
@@ -148,6 +149,8 @@ public class DVCameraActivity extends AppCompatActivity {
             jCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
         }
 
+        //设置最大录制时长
+        jCameraView.setMaxDuration(config.maxDuration);
 
         //设置视频质量
         jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);

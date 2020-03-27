@@ -38,7 +38,10 @@ public class DVCameraConfig implements Serializable {
      */
     public boolean isUseSystemCamera = false;
 
-
+    /**
+     * 最大录制时长（单位秒，默认10秒）
+     */
+    public int maxDuration = 10;
 
     /**
      * 创建实例Builder
@@ -71,6 +74,14 @@ public class DVCameraConfig implements Serializable {
          * 是否使用系统照相机
          */
         private boolean isUseSystemCamera = false;
+
+        /**
+         * 最大录制时长（单位秒，默认10秒）
+         */
+        private int maxDuration = 10;
+
+
+
 
         public Builder needCrop(boolean needCrop) {
             this.needCrop = needCrop;
@@ -120,6 +131,10 @@ public class DVCameraConfig implements Serializable {
             this.isUseSystemCamera = isUseSystemCamera;
             return this;
         }
+        public Builder maxDuration(int maxDuration){
+            this.maxDuration = maxDuration;
+            return this;
+        }
 
         /**
          * 获取配置后的实例
@@ -154,6 +169,10 @@ public class DVCameraConfig implements Serializable {
              * 是否使用系统照相机
              */
             config.isUseSystemCamera = isUseSystemCamera;
+            /**
+             * 最大录制时长（单位秒，默认10秒）
+             */
+            config.maxDuration = maxDuration;
 
             return config;
         }

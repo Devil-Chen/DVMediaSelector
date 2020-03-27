@@ -85,8 +85,8 @@ public class MediaDataUtils {
             public void run() {
                 final HashMap<String,ArrayList<MediaInfo>> allMediaTemp = new HashMap<>();//所有照片
                 Uri mImageUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                String[] proj = { MediaStore.Video.Thumbnails._ID
-                        , MediaStore.Video.Thumbnails.DATA
+                String[] proj = { MediaStore.Video.Media._ID
+                        , MediaStore.Video.Media.DATA
                         ,MediaStore.Video.Media.DURATION
                         ,MediaStore.Video.Media.SIZE
                         ,MediaStore.Video.Media.DISPLAY_NAME
@@ -109,12 +109,13 @@ public class MediaDataUtils {
                             size = new File(path).length()/1024;
                         }
                         String displayName = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-                        long modifyTime = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED));//暂未用到
+//                        long modifyTime = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED));//暂未用到
                         String thumbPath = "";
+
                         //判断是否需要缩略图
                         if (isNeedThumbnail){
                             //提前生成缩略图，再获取：http://stackoverflow.com/questions/27903264/how-to-get-the-video-thumbnail-path-and-not-the-bitmap
-                            MediaStore.Video.Thumbnails.getThumbnail(mContext.getContentResolver(), videoId, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+//                            MediaStore.Video.Thumbnails.getThumbnail(mContext.getContentResolver(), videoId, MediaStore.Video.Thumbnails.MICRO_KIND, null);
                             String[] projection = { MediaStore.Video.Thumbnails._ID, MediaStore.Video.Thumbnails.DATA};
                             Cursor cursor = mContext.getContentResolver().query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI
                                     , projection
@@ -124,6 +125,12 @@ public class MediaDataUtils {
 
                             while (cursor.moveToNext()){
                                 thumbPath = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
+                                //检测缩略图是否存在
+                                File thumbFile = new File(thumbPath);
+                                if (!thumbFile.exists()){
+                                    thumbPath = "";
+                                }
+
                             }
                             cursor.close();
                         }

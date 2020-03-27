@@ -1,14 +1,25 @@
 package com.devil.test;
 
+import android.app.Activity;
 import android.content.Context;
+
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
+
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.common.ImageLoader;
 import com.devil.library.media.listener.OnSelectMediaListener;
@@ -23,6 +34,8 @@ import java.util.List;
  * 测试
  */
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private Activity mActivity;
     //结果
     private TextView tvResult;
 
@@ -31,14 +44,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        this.mActivity = this;
 
         tvResult = findViewById(R.id.tvResult);
 
         //设置加载器
         MediaSelectorManager.getInstance().initImageLoader(new ImageLoader() {
             @Override
-            public void displayImage(Context context, String path, ImageView imageView) {
-                Glide.with(context).load(path).into(imageView);
+            public void displayImage(Context context, final String path, ImageView imageView) {
+                Glide.with(context).load(path).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Log.e(TAG,"加载失败--》"+e.getMessage() + "\t加载地址-->"+path);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                }).into(imageView);
             }
         });
 
@@ -48,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
      * 默认配置的多选测试
      */
     public void defaultConfigMultiSelect(View view){
+
         //打开界面
         MediaSelectorManager.openSelectMediaWithConfig(this, MediaSelectorManager.getDefaultListConfigBuilder().build(), new OnSelectMediaListener() {
             @Override
@@ -126,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 .sureBtnBgResource(R.drawable.shape_btn_default)
                 //设置文件临时缓存路径
                 .fileCachePath(this.getCacheDir().getPath())
+                //选择类型
+                .mediaType(DVMediaType.ALL)
                 //设置是否包含预览
                 .hasPreview(true)
                 .build();
@@ -142,21 +170,71 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 多选视频测试
+     * 多选视频快速加载测试
      */
-    public void multiSelectVideo(View view){
-        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
-                .mediaType(DVMediaType.VIDEO)
-                .hasPreview(true).build();
-        //打开界面
-        MediaSelectorManager.openSelectMediaWithConfig(this,config, new OnSelectMediaListener() {
+    public void multiSelectVideoQuickLoad(View view){
+
+        //清除缓存，测试效果
+        Glide.get(this).clearMemory();
+        new Thread(new Runnable() {
             @Override
-            public void onSelectMedia(List<String> li_path) {
-                for (String path : li_path) {
-                    tvResult.append(path + "\n");
-                }
+            public void run() {
+                Glide.get(mActivity).clearDiskCache();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //这里才是开始调用
+                        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                                .mediaType(DVMediaType.VIDEO)
+                                .quickLoadVideoThumb(true)
+                                .hasPreview(true).build();
+                        //打开界面
+                        MediaSelectorManager.openSelectMediaWithConfig(mActivity,config, new OnSelectMediaListener() {
+                            @Override
+                            public void onSelectMedia(List<String> li_path) {
+                                for (String path : li_path) {
+                                    tvResult.append(path + "\n");
+                                }
+                            }
+                        });
+                    }
+                });
             }
-        });
+        }).start();
+
+    }
+
+    /**
+     * 多选视频使用加载框架加载首帧测试
+     */
+    public void multiSelectVideoWithLoader(View view){
+        //清除缓存，测试效果
+        Glide.get(this).clearMemory();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(mActivity).clearDiskCache();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //这里才是开始调用
+                        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                                .mediaType(DVMediaType.VIDEO)
+                                .quickLoadVideoThumb(false)
+                                .hasPreview(true).build();
+                        //打开界面
+                        MediaSelectorManager.openSelectMediaWithConfig(mActivity,config, new OnSelectMediaListener() {
+                            @Override
+                            public void onSelectMedia(List<String> li_path) {
+                                for (String path : li_path) {
+                                    tvResult.append(path + "\n");
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }).start();
     }
 
     /**
@@ -204,15 +282,17 @@ public class MainActivity extends AppCompatActivity {
      */
     public void openCamera(View view) {
         tvResult.setText("");
-        DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuild()
+        DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
                 //是否使用系统照相机（默认使用仿微信照相机）
                 .isUseSystemCamera(false)
                 //是否需要裁剪
                 .needCrop(true)
                 //裁剪大小
                 .cropSize(1, 1, 200, 200)
-                //媒体类型
+                //媒体类型（如果是使用系统照相机，必须指定DVMediaType.PHOTO或DVMediaType.VIDEO）
                 .mediaType(DVMediaType.ALL)
+                //设置录制时长
+                .maxDuration(10)
                 .build();
 
         MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {

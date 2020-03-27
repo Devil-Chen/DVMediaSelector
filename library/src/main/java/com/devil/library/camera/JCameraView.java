@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -139,6 +140,17 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         a.recycle();
         initData();
         initView();
+    }
+
+    /**
+     * 设置最大录制时长
+     * @param maxDuration 单位秒
+     */
+    public void setMaxDuration(int maxDuration){
+        this.duration = maxDuration * 1000;
+        if (mCaptureLayout != null){
+            mCaptureLayout.setDuration(duration);
+        }
     }
 
     private void initData() {

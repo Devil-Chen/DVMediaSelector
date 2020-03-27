@@ -28,9 +28,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="multiSelectVideo"
-        android:text="多选视频测试" />
-
+        android:onClick="multiSelectVideoQuickLoad"
+        android:text="多选视频快速加载测试" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="multiSelectVideoWithLoader"
+        android:text="多选视频使用加载框架加载首帧测试" />
 
     <Button
         android:layout_width="wrap_content"

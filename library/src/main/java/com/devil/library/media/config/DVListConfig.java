@@ -152,6 +152,10 @@ public class DVListConfig implements Serializable {
      * 是否需要预览
      */
     public boolean hasPreview = true;
+    /**
+     * 是否需要快速加载视频缩略图（默认为true从系统直接获取，获取不到使用加载图片框架获取首帧。为false，直接使用加载图片框架获取首帧）
+     */
+    public boolean quickLoadVideoThumb = true;
 
 
 
@@ -306,6 +310,10 @@ public class DVListConfig implements Serializable {
          * 是否需要预览
          */
         private boolean hasPreview = true;
+        /**
+         * 是否需要快速加载视频缩略图（默认为true从系统直接获取，获取不到使用加载图片框架获取首帧。为false，直接使用加载图片框架获取首帧）
+         */
+        private boolean quickLoadVideoThumb = true;
 
 
         public Builder needCrop(boolean needCrop) {
@@ -474,6 +482,10 @@ public class DVListConfig implements Serializable {
             this.hasPreview = hasPreview;
             return this;
         }
+        public Builder quickLoadVideoThumb(boolean quickLoadVideoThumb){
+            this.quickLoadVideoThumb = quickLoadVideoThumb;
+            return this;
+        }
 
 
         /**
@@ -623,6 +635,10 @@ public class DVListConfig implements Serializable {
              * 是否需要预览
              */
             config.hasPreview = hasPreview;
+            /**
+             * 是否需要快速加载视频缩略图（先用占位图加载视频，再加载缩略图）
+             */
+            config.quickLoadVideoThumb = quickLoadVideoThumb;
 
             return config;
         }

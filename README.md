@@ -23,7 +23,7 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.8'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.9'
 }
 ```
 
@@ -99,6 +99,8 @@ DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
 .fileCachePath(FileUtils.createRootPath(this))
 //设置是否包含预览
 .hasPreview(true)
+//是否需要快速加载视频缩略图（默认为true从系统直接获取，获取不到使用加载图片框架获取首帧。为false，直接使用加载图片框架获取首帧）
+.quickLoadVideoThumb(true)
 .build();
 
 //打开界面
@@ -148,16 +150,18 @@ public void onSelectMedia(List<String> li_path) {
 
 **照相机**
 ```
-DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuild()
-//是否使用系统照相机（默认使用仿微信照相机）
-.isUseSystemCamera(false)
-//是否需要裁剪
-.needCrop(true)
-//裁剪大小
-.cropSize(1, 1, 200, 200)
-//媒体类型
-.mediaType(DVMediaType.ALL)
-.build();
+DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
+        //是否使用系统照相机（默认使用仿微信照相机）
+        .isUseSystemCamera(false)
+        //是否需要裁剪
+        .needCrop(true)
+        //裁剪大小
+        .cropSize(1, 1, 200, 200)
+        //媒体类型（如果是使用系统照相机，必须指定DVMediaType.PHOTO或DVMediaType.VIDEO）
+        .mediaType(DVMediaType.ALL)
+        //设置录制时长
+        .maxDuration(10)
+        .build();
 
 MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {
     @Override

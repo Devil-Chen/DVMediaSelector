@@ -328,7 +328,7 @@ public class MediaListFragment extends Fragment {
                 }
             });
         }else if (config.mediaType == DVMediaType.VIDEO){//加载视频数据
-            MediaDataUtils.getAllVideoInfo(mContext,false, new MediaDataUtils.OnLoadCallBack() {
+            MediaDataUtils.getAllVideoInfo(mContext,config.quickLoadVideoThumb, new MediaDataUtils.OnLoadCallBack() {
                 @Override
                 public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allVideos) {
                     afterLoadDataSuccess(allVideos);
@@ -338,7 +338,7 @@ public class MediaListFragment extends Fragment {
             MediaDataUtils.getAllPhotoInfo(mContext, new MediaDataUtils.OnLoadCallBack() {
                 @Override
                 public void onLoadSuccess(final HashMap<String, ArrayList<MediaInfo>> allPhotos) {
-                    MediaDataUtils.getAllVideoInfo(mContext,false, new MediaDataUtils.OnLoadCallBack() {
+                    MediaDataUtils.getAllVideoInfo(mContext,config.quickLoadVideoThumb, new MediaDataUtils.OnLoadCallBack() {
                         @Override
                         public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allVideos) {
                             allVideos.putAll(allPhotos);
