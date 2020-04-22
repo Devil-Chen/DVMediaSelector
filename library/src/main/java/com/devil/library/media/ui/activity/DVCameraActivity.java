@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -14,7 +13,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.devil.library.camera.JCameraView;
@@ -53,7 +53,7 @@ public class DVCameraActivity extends AppCompatActivity {
     //相机配置
     private DVCameraConfig config;
     //相机显示的view
-    private JCameraView jCameraView;
+    private JCameraView cameraView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,20 +114,23 @@ public class DVCameraActivity extends AppCompatActivity {
      * 全屏显示
      */
     private void fullScreen(){
-        if (Build.VERSION.SDK_INT >= 19) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        } else {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(option);
-        }
+        Window window= getWindow();
+        //全屏显示
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        } else {
+//            View decorView = getWindow().getDecorView();
+//            int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//            decorView.setSystemUiVisibility(option);
+//        }
     }
 
     /**
@@ -135,28 +138,31 @@ public class DVCameraActivity extends AppCompatActivity {
      */
     private void startCamera(){
         //相机显示的view
-        jCameraView = findViewById(R.id.myCameraView);
+        cameraView = findViewById(R.id.myCameraView);
 
         //设置视频保存路径
-        jCameraView.setSaveVideoPath(fileCachePath);
+        cameraView.setSaveVideoPath(fileCachePath);
 
         //设置只能录像或只能拍照或两种都可以（默认两种都可以）
         if (config.mediaType == DVMediaType.ALL){//都可以
-            jCameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
+            cameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
         }else if(config.mediaType == DVMediaType.PHOTO){//只拍照
-            jCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_CAPTURE);
+            cameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_CAPTURE);
         }else if(config.mediaType == DVMediaType.VIDEO){//只录像
-            jCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
+            cameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
         }
 
         //设置最大录制时长
-        jCameraView.setMaxDuration(config.maxDuration);
+        cameraView.setMaxDuration(config.maxDuration);
 
         //设置视频质量
-        jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
+        cameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
+
+        //设置闪光灯状态
+        cameraView.setFlashLightEnable(config.flashLightEnable);
 
         //JCameraView监听
-        jCameraView.setErrorLisenter(new ErrorListener() {
+        cameraView.setErrorListener(new ErrorListener() {
             @Override
             public void onError() {
                 //打开Camera失败回调
@@ -168,7 +174,7 @@ public class DVCameraActivity extends AppCompatActivity {
                 Log.i(TAG, "AudioPermissionError");
             }
         });
-        jCameraView.setJCameraLisenter(new JCameraListener() {
+        cameraView.setJCameraLisenter(new JCameraListener() {
             @Override
             public void captureSuccess(Bitmap bitmap) {
                 //获取图片bitmap
@@ -181,26 +187,26 @@ public class DVCameraActivity extends AppCompatActivity {
                     finishSelect(savePath);
                 }
             }
+
             @Override
-            public void recordSuccess(String url,Bitmap firstFrame) {
-                //获取视频路径
-                Log.i(TAG, "url = " + url);
+            public void recordSuccess(String url, Bitmap firstFrame) {
                 finishSelect(url);
             }
         });
 
+
         //左边按钮点击事件
-        jCameraView.setLeftClickListener(new ClickListener() {
+        cameraView.setLeftClickListener(new ClickListener() {
             @Override
             public void onClick() {
                 onBackPressed();
             }
         });
         //右边按钮点击事件
-        jCameraView.setRightClickListener(new ClickListener() {
+        cameraView.setRightClickListener(new ClickListener() {
             @Override
             public void onClick() {
-                Toast.makeText(DVCameraActivity.this,"Right",Toast.LENGTH_SHORT).show();
+
             }
 
         });
@@ -228,15 +234,15 @@ public class DVCameraActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (jCameraView != null){
-            jCameraView.onResume();
+        if (cameraView != null){
+            cameraView.onResume();
         }
     }
     @Override
     protected void onPause() {
         super.onPause();
-        if (jCameraView != null){
-            jCameraView.onPause();
+        if (cameraView != null){
+            cameraView.onPause();
         }
     }
 

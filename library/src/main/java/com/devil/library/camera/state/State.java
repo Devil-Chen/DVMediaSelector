@@ -3,7 +3,7 @@ package com.devil.library.camera.state;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.devil.library.camera.view.CameraInterface;
+import com.devil.library.camera.CameraInterface;
 
 /**
  * =====================================
