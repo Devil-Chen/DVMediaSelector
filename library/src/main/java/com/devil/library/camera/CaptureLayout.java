@@ -32,21 +32,21 @@ import com.devil.library.camera.listener.TypeListener;
 
 public class CaptureLayout extends FrameLayout {
 
-    private CaptureListener captureLisenter;    //拍照按钮监听
-    private TypeListener typeLisenter;          //拍照或录制后接结果按钮监听
+    private CaptureListener captureListener;    //拍照按钮监听
+    private TypeListener typeListener;          //拍照或录制后接结果按钮监听
     private ReturnListener returnListener;      //退出按钮监听
     private ClickListener leftClickListener;    //左边按钮监听
     private ClickListener rightClickListener;   //右边按钮监听
 
-    public void setTypeLisenter(TypeListener typeLisenter) {
-        this.typeLisenter = typeLisenter;
+    public void setTypeListener(TypeListener typeListener) {
+        this.typeListener = typeListener;
     }
 
-    public void setCaptureLisenter(CaptureListener captureLisenter) {
-        this.captureLisenter = captureLisenter;
+    public void setCaptureListener(CaptureListener captureListener) {
+        this.captureListener = captureListener;
     }
 
-    public void setReturnLisenter(ReturnListener returnListener) {
+    public void setReturnListener(ReturnListener returnListener) {
         this.returnListener = returnListener;
     }
 
@@ -144,34 +144,34 @@ public class CaptureLayout extends FrameLayout {
         LayoutParams btn_capture_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         btn_capture_param.gravity = Gravity.CENTER;
         btn_capture.setLayoutParams(btn_capture_param);
-        btn_capture.setCaptureLisenter(new CaptureListener() {
+        btn_capture.setCaptureListener(new CaptureListener() {
             @Override
             public void takePictures() {
-                if (captureLisenter != null) {
-                    captureLisenter.takePictures();
+                if (captureListener != null) {
+                    captureListener.takePictures();
                 }
             }
 
             @Override
             public void recordShort(long time) {
-                if (captureLisenter != null) {
-                    captureLisenter.recordShort(time);
+                if (captureListener != null) {
+                    captureListener.recordShort(time);
                 }
                 startAlphaAnimation();
             }
 
             @Override
             public void recordStart() {
-                if (captureLisenter != null) {
-                    captureLisenter.recordStart();
+                if (captureListener != null) {
+                    captureListener.recordStart();
                 }
                 startAlphaAnimation();
             }
 
             @Override
             public void recordEnd(long time) {
-                if (captureLisenter != null) {
-                    captureLisenter.recordEnd(time);
+                if (captureListener != null) {
+                    captureListener.recordEnd(time);
                 }
                 startAlphaAnimation();
                 startTypeBtnAnimator();
@@ -179,15 +179,15 @@ public class CaptureLayout extends FrameLayout {
 
             @Override
             public void recordZoom(float zoom) {
-                if (captureLisenter != null) {
-                    captureLisenter.recordZoom(zoom);
+                if (captureListener != null) {
+                    captureListener.recordZoom(zoom);
                 }
             }
 
             @Override
             public void recordError() {
-                if (captureLisenter != null) {
-                    captureLisenter.recordError();
+                if (captureListener != null) {
+                    captureListener.recordError();
                 }
             }
         });
@@ -201,8 +201,8 @@ public class CaptureLayout extends FrameLayout {
         btn_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (typeLisenter != null) {
-                    typeLisenter.cancel();
+                if (typeListener != null) {
+                    typeListener.cancel();
                 }
                 startAlphaAnimation();
 //                resetCaptureLayout();
@@ -218,8 +218,8 @@ public class CaptureLayout extends FrameLayout {
         btn_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (typeLisenter != null) {
-                    typeLisenter.confirm();
+                if (typeListener != null) {
+                    typeListener.confirm();
                 }
                 startAlphaAnimation();
 //                resetCaptureLayout();

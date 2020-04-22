@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -21,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.devil.library.camera.listener.CaptureListener;
@@ -116,6 +116,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     private boolean firstTouch = true;
     private float firstTouchLength = 0;
 
+    //闪光灯是否启用
+    private boolean flashLightEnable;
+
     public JCameraView(Context context) {
         this(context, null);
     }
@@ -163,7 +166,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     private void initView() {
         setWillNotDraw(false);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_dv_camera, this);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.view_dv_jcamera, this);
         mVideoView = (VideoView) view.findViewById(R.id.video_preview);
         mPhoto = (ImageView) view.findViewById(R.id.image_photo);
         mSwitchCamera = (ImageView) view.findViewById(R.id.image_switch);
@@ -173,6 +176,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mFlashLamp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (machine.isFront()){
+                    Toast.makeText(getContext(),"前置摄像头无法设置闪光灯",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 type_flash++;
                 if (type_flash > 0x023)
                     type_flash = TYPE_FLASH_AUTO;
@@ -189,10 +196,18 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void onClick(View v) {
                 machine.swtich(mVideoView.getHolder(), screenProp);
+                //设置闪光灯图标是否显示
+                if (flashLightEnable){
+                    if (machine.isFront()){
+                        setFlashLightVisibility(View.GONE);
+                    }else{
+                        setFlashLightVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
         //拍照 录像
-        mCaptureLayout.setCaptureLisenter(new CaptureListener() {
+        mCaptureLayout.setCaptureListener(new CaptureListener() {
             @Override
             public void takePictures() {
                 mSwitchCamera.setVisibility(INVISIBLE);
@@ -233,13 +248,13 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
             @Override
             public void recordError() {
-                if (errorLisenter != null) {
-                    errorLisenter.AudioPermissionError();
+                if (errorListener != null) {
+                    errorListener.AudioPermissionError();
                 }
             }
         });
         //确认 取消
-        mCaptureLayout.setTypeLisenter(new TypeListener() {
+        mCaptureLayout.setTypeListener(new TypeListener() {
             @Override
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
@@ -290,6 +305,26 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     @Override
     public void cameraHasOpened() {
         CameraInterface.getInstance().doStartPreview(mVideoView.getHolder(), screenProp);
+    }
+
+    /**
+     * 设置闪光灯显示状态
+     * @param visibility
+     */
+    public void setFlashLightVisibility(int visibility ){
+        if (mFlashLamp.getVisibility() != visibility){
+            mFlashLamp.setVisibility(visibility);
+        }
+    }
+    /**
+     * 设置闪光灯是否可用
+     * @param enable
+     */
+    public void setFlashLightEnable(boolean enable){
+        flashLightEnable = enable;
+        if (!enable){
+            setFlashLightVisibility(View.GONE);
+        }
     }
 
     //生命周期onResume
@@ -412,12 +447,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     }
 
 
-    private ErrorListener errorLisenter;
+    private ErrorListener errorListener;
 
     //启动Camera错误回调
-    public void setErrorLisenter(ErrorListener errorLisenter) {
-        this.errorLisenter = errorLisenter;
-        CameraInterface.getInstance().setErrorLinsenter(errorLisenter);
+    public void setErrorListener(ErrorListener errorListener) {
+        this.errorListener = errorListener;
+        CameraInterface.getInstance().setErrorListener(errorListener);
     }
 
     //设置CaptureButton功能（拍照和录像）
@@ -450,7 +485,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 break;
         }
         mSwitchCamera.setVisibility(VISIBLE);
-        mFlashLamp.setVisibility(VISIBLE);
+        if (flashLightEnable){
+            mFlashLamp.setVisibility(VISIBLE);
+        }
         mCaptureLayout.resetCaptureLayout();
     }
 
@@ -594,6 +631,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     }
 
     private void setFlashRes() {
+        if (machine.isFront()){
+            return;
+        }
         switch (type_flash) {
             case TYPE_FLASH_AUTO:
                 mFlashLamp.setImageResource(R.drawable.ic_flash_auto);
