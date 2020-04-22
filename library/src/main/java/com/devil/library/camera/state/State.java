@@ -3,7 +3,7 @@ package com.devil.library.camera.state;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.devil.library.camera.CameraInterface;
+import com.devil.library.camera.view.CameraInterface;
 
 /**
  * =====================================
@@ -38,4 +38,8 @@ public interface State {
     void zoom(float zoom, int type);
 
     void flash(String mode);
+    /**
+     * 是否前置摄像头
+     */
+    boolean isFront();
 }

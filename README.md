@@ -23,7 +23,7 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.0.9'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.1.0'
 }
 ```
 
@@ -161,6 +161,8 @@ DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
         .mediaType(DVMediaType.ALL)
         //设置录制时长
         .maxDuration(10)
+        //闪光灯是否启用
+        .flashLightEnable(true)
         .build();
 
 MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {

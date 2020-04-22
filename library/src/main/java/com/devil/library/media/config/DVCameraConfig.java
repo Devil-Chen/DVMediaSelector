@@ -44,6 +44,11 @@ public class DVCameraConfig implements Serializable {
     public int maxDuration = 10;
 
     /**
+     * 是否启用闪光灯
+     */
+    public boolean flashLightEnable = true;
+
+    /**
      * 创建实例Builder
      */
     public static class Builder{
@@ -80,7 +85,10 @@ public class DVCameraConfig implements Serializable {
          */
         private int maxDuration = 10;
 
-
+        /**
+         * 是否启用闪光灯（启用则后置摄像头显示，前置摄像头不显示）
+         */
+        private boolean flashLightEnable = true;
 
 
         public Builder needCrop(boolean needCrop) {
@@ -135,6 +143,10 @@ public class DVCameraConfig implements Serializable {
             this.maxDuration = maxDuration;
             return this;
         }
+        public Builder flashLightEnable(boolean enable){
+            this.flashLightEnable = enable;
+            return this;
+        }
 
         /**
          * 获取配置后的实例
@@ -173,6 +185,10 @@ public class DVCameraConfig implements Serializable {
              * 最大录制时长（单位秒，默认10秒）
              */
             config.maxDuration = maxDuration;
+            /**
+             * 是否启用闪光灯
+             */
+            config.flashLightEnable = flashLightEnable;
 
             return config;
         }

@@ -341,8 +341,22 @@ public class MediaListFragment extends Fragment {
                     MediaDataUtils.getAllVideoInfo(mContext,config.quickLoadVideoThumb, new MediaDataUtils.OnLoadCallBack() {
                         @Override
                         public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allVideos) {
-                            allVideos.putAll(allPhotos);
-                            afterLoadDataSuccess(allVideos);
+                            HashMap<String, ArrayList<MediaInfo>> allFile = new HashMap<>();
+                            allFile.putAll(allPhotos);
+                            Set<String> keySet = allVideos.keySet();
+                            Iterator<String> iterator = keySet.iterator();
+                            while (iterator.hasNext()){
+                                String key = iterator.next();
+                                if (allFile.get(key) != null){
+                                    ArrayList<MediaInfo> sourceArray = allFile.get(key);
+                                    ArrayList<MediaInfo> videoArray = allVideos.get(key);
+                                    sourceArray.addAll(videoArray);
+                                    allFile.put(key,sourceArray);
+                                }else{
+                                    allFile.put(key,allVideos.get(key));
+                                }
+                            }
+                            afterLoadDataSuccess(allFile);
                         }
                     });
                 }

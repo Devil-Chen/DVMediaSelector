@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.devil.library.camera.CameraInterface;
+import com.devil.library.camera.view.CameraInterface;
 import com.devil.library.camera.view.CameraView;
 
 /**
@@ -125,6 +125,14 @@ public class CameraMachine implements State {
     @Override
     public void flash(String mode) {
         state.flash(mode);
+    }
+
+    /**
+     * 是否前置摄像头
+     */
+    @Override
+    public boolean isFront(){
+        return state.isFront();
     }
 
     public State getState() {

@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.devil.library.camera.CameraInterface;
-import com.devil.library.camera.JCameraView;
+import com.devil.library.camera.view.CameraInterface;
+import com.devil.library.camera.view.JCameraView;
 import com.devil.library.camera.util.LogUtil;
 
 /**
@@ -28,6 +28,13 @@ class PreviewState implements State {
     @Override
     public void start(SurfaceHolder holder, float screenProp) {
         CameraInterface.getInstance().doStartPreview(holder, screenProp);
+    }
+
+    /**
+     * 是否前置摄像头
+     */
+    public boolean isFront() {
+        return CameraInterface.getInstance().isFront();
     }
 
     @Override

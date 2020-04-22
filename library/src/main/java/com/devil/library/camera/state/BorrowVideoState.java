@@ -3,8 +3,8 @@ package com.devil.library.camera.state;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.devil.library.camera.CameraInterface;
-import com.devil.library.camera.JCameraView;
+import com.devil.library.camera.view.CameraInterface;
+import com.devil.library.camera.view.JCameraView;
 import com.devil.library.camera.util.LogUtil;
 
 /**
@@ -85,5 +85,13 @@ public class BorrowVideoState implements State {
     @Override
     public void flash(String mode) {
 
+    }
+
+    /**
+     * 是否前置摄像头
+     */
+    @Override
+    public boolean isFront() {
+        return CameraInterface.getInstance().isFront();
     }
 }
