@@ -16,9 +16,9 @@ import com.devil.library.camera.listener.CaptureListener;
 import com.devil.library.camera.util.CheckPermission;
 import com.devil.library.camera.util.LogUtil;
 
-import static com.devil.library.camera.view.DVCameraView.BUTTON_STATE_BOTH;
-import static com.devil.library.camera.view.DVCameraView.BUTTON_STATE_ONLY_CAPTURE;
-import static com.devil.library.camera.view.DVCameraView.BUTTON_STATE_ONLY_RECORDER;
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_BOTH;
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_ONLY_CAPTURE;
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_ONLY_RECORDER;
 
 
 /**
