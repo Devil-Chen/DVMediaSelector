@@ -353,6 +353,14 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void run() {
                 CameraInterface.getInstance().doOpenCamera(JCameraView.this);
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (machine.isFront()){
+                            setFlashLightVisibility(View.GONE);
+                        }
+                    }
+                });
             }
         }.start();
     }
@@ -485,7 +493,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 break;
         }
         mSwitchCamera.setVisibility(VISIBLE);
-        if (flashLightEnable){
+        if (flashLightEnable && !machine.isFront()){
             mFlashLamp.setVisibility(VISIBLE);
         }
         mCaptureLayout.resetCaptureLayout();
@@ -648,5 +656,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 machine.flash(Camera.Parameters.FLASH_MODE_OFF);
                 break;
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
     }
 }

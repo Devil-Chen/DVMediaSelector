@@ -12,6 +12,7 @@
     <application>
         <activity
             android:name="com.devil.library.media.ui.activity.DVMediaSelectActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
@@ -20,6 +21,7 @@
 
         <activity
             android:name="com.devil.library.media.ui.activity.DVCameraActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
