@@ -9,53 +9,90 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="defaultConfigMultiSelect"
-        android:text="默认配置多选测试" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="multiSelectNoPreview"
-        android:text="默认配置不要预览多选测试" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="multiSelect"
-        android:text="自定义多选测试" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="multiSelectVideoQuickLoad"
-        android:text="多选视频快速加载测试" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="multiSelectVideoWithLoader"
-        android:text="多选视频使用加载框架加载首帧测试" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="singleSelect"
-        android:text="单选测试" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="openCamera"
-        android:text="相机测试" />
-
-    <!--<com.facebook.drawee.view.SimpleDraweeView-->
-        <!--android:id="@+id/my_image_view"-->
-        <!--android:layout_width="130dp"-->
-        <!--android:layout_height="130dp" />-->
-
-    <TextView
-        android:id="@+id/tvResult"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="defaultConfigMultiSelect"
+                android:text="默认配置多选测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="multiSelectNoPreview"
+                android:text="默认配置不要预览多选测试" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="multiSelect"
+                android:text="自定义多选测试" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="multiSelectVideoQuickLoad"
+                android:text="多选视频快速加载测试（需有缩略图）" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="multiSelectVideoWithLoader"
+                android:text="多选视频使用加载框架加载首帧测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="singleSelect"
+                android:text="单选测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="editPhoto"
+                android:text="图片编辑测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openCamera"
+                android:text="相机测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openBeautyCamera"
+                android:text="美颜相机测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="videoTrim"
+                android:text="视频剪辑测试" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="videoCrop"
+                android:text="视频裁剪测试" />
+
+            <!--<com.facebook.drawee.view.SimpleDraweeView-->
+            <!--android:id="@+id/my_image_view"-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp" />-->
+
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

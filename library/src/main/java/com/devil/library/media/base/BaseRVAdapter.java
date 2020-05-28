@@ -54,39 +54,21 @@ public abstract class BaseRVAdapter<H extends EasyRVHolder,P extends Object> ext
         // TODO Auto-generated method stub
         View itemView = LayoutInflater.from(mContext).inflate(getViewLayoutId(viewType), parent, false);
         final H holder = createHolder(itemView,viewType);
+        if (itemClickListener != null){
+            holder.setOnItemViewClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(holder,holder.getLayoutPosition());
+                }
+            });
+        }
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final H holder, final int position) {
-        if (itemClickListener != null && itemCanClick(position) && needAutoSetUpItemClick()){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemClickListener != null) {
-                        itemClickListener.onItemClick(holder,position);
-                    }
-                }
-            });
-        }
         initData(holder,position);
-    }
-
-    /**
-     * 是否需要自动设置子菜单点击事件监听（默认true）
-     * @return 需要设置/不需要设置
-     */
-    protected boolean needAutoSetUpItemClick(){
-        return true;
-    }
-
-    /**
-     * 某个子菜单是否可点击（默认true）
-     * @param position
-     * @return 可点击/不可点击
-     */
-    protected boolean itemCanClick(int position){
-        return true;
     }
 
     /**
@@ -109,7 +91,7 @@ public abstract class BaseRVAdapter<H extends EasyRVHolder,P extends Object> ext
     /**
      * 子菜单点击监听
      */
-    public interface OnItemClickListener<H extends EasyRVHolder>{
-       void onItemClick( H holder,int position);
+    public interface OnItemClickListener{
+       void onItemClick( EasyRVHolder holder,int position);
     }
 }

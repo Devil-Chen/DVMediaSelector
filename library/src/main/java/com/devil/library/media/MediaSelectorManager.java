@@ -13,9 +13,12 @@ import com.devil.library.media.common.MediaTempListener;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
+import com.devil.library.media.ui.activity.DVBeautyCameraActivity;
 import com.devil.library.media.ui.activity.DVCameraActivity;
+import com.devil.library.media.ui.activity.DVEditPhotoActivity;
 import com.devil.library.media.ui.activity.DVMediaSelectActivity;
 import com.devil.library.media.ui.activity.DVSystemCameraActivity;
+
 
 /**
  * 选择管理者（使用了第三方库PhotoView：com.github.chrisbanes:PhotoView:2.0.0）
@@ -32,6 +35,7 @@ public class MediaSelectorManager {
     private DVListConfig currentListConfig;
     //当前相机配置
     private DVCameraConfig currentCameraConfig;
+
 
 
 
@@ -81,6 +85,7 @@ public class MediaSelectorManager {
         }
     }
 
+
     /**
      * 获取当前列表选择配置
      * @return
@@ -110,6 +115,7 @@ public class MediaSelectorManager {
     public void clean(){
         currentListConfig = null;
         currentCameraConfig = null;
+        MediaTempListener.release();
     }
 
     /**
@@ -199,10 +205,18 @@ public class MediaSelectorManager {
      */
     public static void openCameraWithConfig(Activity mActivity, DVCameraConfig config, OnSelectMediaListener listener){
         Intent intent = new Intent();
-        if (config.isUseSystemCamera){
-            intent.setClass(mActivity,DVSystemCameraActivity.class);
-        }else{
-            intent.setClass(mActivity,DVCameraActivity.class);
+        switch (config.cameraType){
+            case SYSTEM:
+                intent.setClass(mActivity,DVSystemCameraActivity.class);
+                break;
+            case NORMAL:
+                intent.setClass(mActivity,DVCameraActivity.class);
+                break;
+            case BEAUTY:
+                intent.setClass(mActivity,DVBeautyCameraActivity.class);
+                break;
+                default:
+                    break;
         }
         MediaSelectorManager.getInstance().currentCameraConfig = config;
         MediaTempListener.setOnSelectMediaListener(listener);
@@ -212,7 +226,7 @@ public class MediaSelectorManager {
     }
 
     /**
-     * 开启相机的界面
+     * 开启相机的界面（普通照相机）
      * @param mActivity
      */
     public static void openCameraWithMediaType(Activity mActivity,DVMediaType mediaType, OnSelectMediaListener listener){
@@ -225,6 +239,18 @@ public class MediaSelectorManager {
         intent.putExtra("action","camera");
 
         startActivityBottomToTop(mActivity,intent);
+    }
+
+    /**
+     * 打开图片编辑
+     * @param mActivity
+     */
+    public static void openEditPhoto(Activity mActivity,String photoPath, DVListConfig config, OnSelectMediaListener listener){
+        MediaTempListener.setOnSelectMediaListener(listener);
+        MediaSelectorManager.getInstance().currentListConfig = config;
+        Intent intent = new Intent(mActivity, DVEditPhotoActivity.class);
+        intent.putExtra("photoPath",photoPath);
+        mActivity.startActivity(intent);
     }
 
 }

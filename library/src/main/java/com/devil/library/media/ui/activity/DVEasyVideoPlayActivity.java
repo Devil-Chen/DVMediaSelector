@@ -21,7 +21,7 @@ import com.devil.library.media.R;
 /**
  * 简易视频播放
  */
-public class DVEasyVideoPlayActivity  extends AppCompatActivity implements View.OnClickListener{
+public class DVEasyVideoPlayActivity  extends DVBaseActivity implements View.OnClickListener{
     //根布局
     private View rootView;
     //视频地址

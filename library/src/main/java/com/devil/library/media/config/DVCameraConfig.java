@@ -1,5 +1,6 @@
 package com.devil.library.media.config;
 
+import com.devil.library.media.enumtype.DVCameraType;
 import com.devil.library.media.enumtype.DVMediaType;
 import com.devil.library.media.utils.FileUtils;
 
@@ -34,9 +35,9 @@ public class DVCameraConfig implements Serializable {
     public DVMediaType mediaType = DVMediaType.ALL;
 
     /**
-     * 是否使用系统照相机
+     * 相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
      */
-    public boolean isUseSystemCamera = false;
+    public DVCameraType cameraType = DVCameraType.NORMAL;
 
     /**
      * 最大录制时长（单位秒，默认10秒）
@@ -47,6 +48,7 @@ public class DVCameraConfig implements Serializable {
      * 是否启用闪光灯
      */
     public boolean flashLightEnable = true;
+
 
     /**
      * 创建实例Builder
@@ -76,9 +78,9 @@ public class DVCameraConfig implements Serializable {
         private DVMediaType mediaType = DVMediaType.ALL;
 
         /**
-         * 是否使用系统照相机
+         * 相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
          */
-        private boolean isUseSystemCamera = false;
+        private DVCameraType cameraType = DVCameraType.NORMAL;
 
         /**
          * 最大录制时长（单位秒，默认10秒）
@@ -135,8 +137,8 @@ public class DVCameraConfig implements Serializable {
             return this;
         }
 
-        public Builder isUseSystemCamera(boolean isUseSystemCamera){
-            this.isUseSystemCamera = isUseSystemCamera;
+        public Builder cameraType(DVCameraType cameraType){
+            this.cameraType = cameraType;
             return this;
         }
         public Builder maxDuration(int maxDuration){
@@ -178,9 +180,9 @@ public class DVCameraConfig implements Serializable {
             config.mediaType = mediaType;
 
             /**
-             * 是否使用系统照相机
+             * 相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
              */
-            config.isUseSystemCamera = isUseSystemCamera;
+            config.cameraType = cameraType;
             /**
              * 最大录制时长（单位秒，默认10秒）
              */

@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * 媒体选择界面
  */
-public class DVMediaSelectActivity extends AppCompatActivity implements View.OnClickListener,OnItemClickListener {
+public class DVMediaSelectActivity extends DVBaseActivity implements View.OnClickListener,OnItemClickListener {
     //当前选择的MediaInfo
     public static HashMap<String,MediaInfo> map_cacheSelectInfo;
 
@@ -259,10 +259,11 @@ public class DVMediaSelectActivity extends AppCompatActivity implements View.OnC
             intent.putStringArrayListExtra("result", li_path);
         }
         setResult(RESULT_OK, intent);
+
         if (MediaTempListener.listener != null){
             MediaTempListener.listener.onSelectMedia(li_path);
         }
-        finish();
+        onBackPressed();
     }
 
 

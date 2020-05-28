@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * dip、px相互转换
@@ -56,5 +58,33 @@ public class DisplayUtils {
         float H = P.y;
         float W = P.x;
         return (H/W);
+    }
+
+    /**
+     * 获取显示宽度
+     */
+    public static int getDisplayWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return -1;
+        }
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getRealSize(size);
+        return size.x;
+    }
+
+    /**
+     * 获取显示高度
+     */
+    public static int getDisplayHeight(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return -1;
+        }
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getRealSize(size);
+        return size.y;
     }
 }

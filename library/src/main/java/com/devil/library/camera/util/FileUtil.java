@@ -20,7 +20,7 @@ public class FileUtil {
     private static final String TAG = "CJT";
     private static final File parentPath = Environment.getExternalStorageDirectory();
     private static String storagePath = "";
-    private static String DST_FOLDER_NAME = "JCamera";
+    private static String DST_FOLDER_NAME = "Camera";
 
     private static String initPath() {
         if (storagePath.equals("")) {

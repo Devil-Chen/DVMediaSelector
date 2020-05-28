@@ -13,7 +13,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -33,7 +32,7 @@ import java.util.List;
 /**
  * 打开照相机（系统）
  */
-public class DVSystemCameraActivity extends AppCompatActivity {
+public class DVSystemCameraActivity extends DVBaseActivity {
 
     private static final int REQUEST_CAMERA = 5;
     private static final int REQUEST_VIDEO = 6;

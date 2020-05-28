@@ -8,28 +8,41 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
         <activity
             android:name="com.devil.library.media.ui.activity.DVMediaSelectActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.devil.library.media.ui.activity.DVSystemCameraActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name="com.devil.library.media.ui.activity.DVCameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
+        <activity
+            android:name="com.devil.library.media.ui.activity.DVBeautyCameraActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name="com.devil.library.media.ui.activity.DVEasyVideoPlayActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
-            android:name="com.devil.library.media.ui.activity.SelectMediaTempActivity"
+            android:name="com.devil.library.media.ui.activity.DVEditPhotoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.devil.library.video.ui.DVVideoTrimActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.devil.library.video.ui.DVVideoCropActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
@@ -45,6 +58,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
     </application>
 
 </manifest>

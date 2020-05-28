@@ -5,9 +5,11 @@ buildscript {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.cpdroid:fat-aar:1.1.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -23,4 +25,16 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+ext{
+    compileSdkVersion = 28
+    targetSdkVersion = 28
+    minSdkVersion = 16
+    supportVersion = '28+'
+    appVersionCode = 1
+    appVersionName = "1.0"
+    libraryVersionCode = 1
+    libraryVersionName = "1.0"
+    buildToolsVersion = "28.0.3"
+    abiFilters = ['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64']
 }

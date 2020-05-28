@@ -1,14 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.devil.test"
-        minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
+        multiDexEnabled true
+
+        ndk {
+            abiFilters "armeabi","armeabi-v7a", "arm64-v8a"
+        }
     }
     buildTypes {
         release {
@@ -18,8 +23,48 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs'
+            dirs 'libs','../library/libs'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+        pickFirst 'lib/armeabi-v7a/libavdevice.so'
+        pickFirst 'lib/armeabi/libavdevice.so'
+        pickFirst 'lib/arm64-v8a/libavdevice.so'
+        pickFirst 'lib/armeabi-v7a/libswresample.so'
+        pickFirst 'lib/armeabi/libswresample.so'
+        pickFirst 'lib/arm64-v8a/libswresample.so'
+        pickFirst 'lib/armeabi-v7a/libnativegdx.so'
+        pickFirst 'lib/armeabi/libnativegdx.so'
+        pickFirst 'lib/arm64-v8a/libnativegdx.so'
+        pickFirst 'lib/armeabi-v7a/libnativefilter.so'
+        pickFirst 'lib/armeabi/libnativefilter.so'
+        pickFirst 'lib/arm64-v8a/libnativefilter.so'
+        pickFirst 'lib/armeabi-v7a/libswscale.so'
+        pickFirst 'lib/armeabi/libswscale.so'
+        pickFirst 'lib/arm64-v8a/libswscale.so'
+        pickFirst 'lib/armeabi-v7a/libavcodec.so'
+        pickFirst 'lib/armeabi/libavcodec.so'
+        pickFirst 'lib/arm64-v8a/libavcodec.so'
+        pickFirst 'lib/armeabi-v7a/libffmpeg.so'
+        pickFirst 'lib/armeabi/libffmpeg.so'
+        pickFirst 'lib/arm64-v8a/libffmpeg.so'
+        pickFirst 'lib/armeabi-v7a/libavutil.so'
+        pickFirst 'lib/armeabi/libavutil.so'
+        pickFirst 'lib/arm64-v8a/libavutil.so'
+        pickFirst 'lib/armeabi-v7a/libavformat.so'
+        pickFirst 'lib/armeabi/libavformat.so'
+        pickFirst 'lib/arm64-v8a/libavformat.so'
+        pickFirst 'lib/armeabi-v7a/libavfilter.so'
+        pickFirst 'lib/armeabi/libavfilter.so'
+        pickFirst 'lib/arm64-v8a/libavfilter.so'
+        pickFirst 'lib/armeabi-v7a/libpostproc.so'
+        pickFirst 'lib/armeabi/libpostproc.so'
+        pickFirst 'lib/arm64-v8a/libpostproc.so'
     }
 
 }
@@ -29,10 +74,15 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
-//     implementation project(':library')
+    implementation 'com.android.support:support-core-ui:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+     implementation project(':library')
 //    implementation(name: 'mediaselector-release', ext: 'aar')
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.1.1'
+//    implementation 'com.github.Devil-Chen:DVMediaSelector:2.0.0'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-    implementation 'com.github.Devil-Chen:DVPermissionHelper:1.0.0'
+//    implementation 'com.google.android.exoplayer:exoplayer:2.11.3'
+//    implementation 'com.google.android.exoplayer:extension-rtmp:2.11.3'
+    implementation 'com.github.dueeeke.dkplayer:player-exo:3.2.6'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
 }

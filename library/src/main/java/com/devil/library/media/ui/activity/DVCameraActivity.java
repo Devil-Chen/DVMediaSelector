@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 /**
  * 打开照相机（自定义）
  */
-public class DVCameraActivity extends AppCompatActivity {
+public class DVCameraActivity extends DVBaseActivity {
 
     private static final String TAG = DVCameraActivity.class.getName();
 

@@ -11,5 +11,5 @@
         app:duration_max="10000"
         app:iconMargin="20dp"
         app:iconSize="30dp"
-        app:iconSrc="@drawable/ic_camera"/>
+        app:iconSrc="@mipmap/icon_dv_switch_camera"/>
 </LinearLayout>

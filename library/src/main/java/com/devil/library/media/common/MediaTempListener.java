@@ -8,6 +8,8 @@ import com.devil.library.media.listener.OnSelectMediaListener;
 public class MediaTempListener {
     //回调监听
     public static OnSelectMediaListener listener;
+    //标志是否释放监听者
+    public static boolean isCanRelease = true;
 
     /**
      * 设置监听者
@@ -21,7 +23,7 @@ public class MediaTempListener {
      * 释放监听者
      */
     public static void release(){
-        if (listener != null){
+        if (listener != null && isCanRelease){
             listener = null;
         }
     }

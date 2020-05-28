@@ -1,8 +1,11 @@
 package com.devil.library.media.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.devil.library.media.MediaSelectorManager;
@@ -84,20 +87,19 @@ public class MediaRVAdapter extends BaseRVAdapter<EasyRVHolder,MediaInfo> {
         return false;
     }
 
+    @NonNull
     @Override
-    protected EasyRVHolder createHolder(View itemView, int position) {
-        return new EasyRVHolder(mContext,itemView);
-    }
-
-    @Override
-    protected void initData(final EasyRVHolder holder, final  int position) {
+    public EasyRVHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+        // TODO Auto-generated method stub
+        View itemView = LayoutInflater.from(mContext).inflate(getViewLayoutId(viewType), parent, false);
+        final EasyRVHolder holder = createHolder(itemView,viewType);
         if (itemClickListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null) {
-                        int realPosition = position;
-                        if (position == 0 && needCamera()){
+                        int realPosition = holder.getLayoutPosition();
+                        if (realPosition == 0 && needCamera()){
                             realPosition = -1;
                         }else{
                             if (needCamera()){
@@ -109,6 +111,18 @@ public class MediaRVAdapter extends BaseRVAdapter<EasyRVHolder,MediaInfo> {
                 }
             });
         }
+
+        return holder;
+    }
+
+    @Override
+    protected EasyRVHolder createHolder(View itemView, int position) {
+        return new EasyRVHolder(mContext,itemView);
+    }
+
+    @Override
+    protected void initData(final EasyRVHolder holder, final  int position) {
+
         //判断是否有照相机
         if (position == 0) {
             if (!needCamera()){//如果是不需要照相机的话，直接设置数据

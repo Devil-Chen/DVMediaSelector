@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -22,10 +24,15 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.devil.library.media.MediaSelectorManager;
 import com.devil.library.media.common.ImageLoader;
+import com.devil.library.media.enumtype.DVCameraType;
 import com.devil.library.media.listener.OnSelectMediaListener;
 import com.devil.library.media.config.DVCameraConfig;
 import com.devil.library.media.config.DVListConfig;
 import com.devil.library.media.enumtype.DVMediaType;
+import com.devil.library.video.VideoMediaManager;
+import com.devil.library.video.listener.OnVideoTrimListener;
+import com.devil.player.ExoMediaPlayer;
+import com.devil.player.IjkPlayer;
 
 
 import java.util.List;
@@ -260,18 +267,49 @@ public class MainActivity extends AppCompatActivity {
                 .backResourceId(R.mipmap.icon_back2)
                 //标题背景
                 .titleBgColor(Color.parseColor("#3F51B5"))
-                //是否需要裁剪
-                .needCrop(true)
-                //裁剪大小
-                .cropSize(1, 1, 200, 200)
+                //设置全部类型
+                .mediaType(DVMediaType.ALL)
+//                //是否需要裁剪
+//                .needCrop(true)
+//                //裁剪大小
+//                .cropSize(1, 1, 200, 200)
                 .build();
 
-        MediaSelectorManager.openSelectMediaWithConfig(this, config, new OnSelectMediaListener() {
+        MediaSelectorManager.openSelectMediaWithConfig(mActivity, config, new OnSelectMediaListener() {
             @Override
             public void onSelectMedia(List<String> li_path) {
                 for (String path : li_path) {
                     tvResult.append(path + "\n");
                 }
+            }
+        });
+    }
+
+    /**
+     * 图片编辑测试
+     * @param view
+     */
+    public void editPhoto(View view) {
+        tvResult.setText("");
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                // 是否多选
+                .multiSelect(false)
+                .build();
+
+        MediaSelectorManager.openSelectMediaWithConfig(mActivity, config, new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+//                for (String path : li_path) {
+//                    tvResult.append(path + "\n");
+//                }
+                MediaSelectorManager.openEditPhoto(mActivity, li_path.get(0), config, new OnSelectMediaListener() {
+                    @Override
+                    public void onSelectMedia(List<String> li_path) {
+                        for (String path : li_path) {
+                            tvResult.append(path + "\n");
+                        }
+                    }
+                });
             }
         });
     }
@@ -283,8 +321,8 @@ public class MainActivity extends AppCompatActivity {
     public void openCamera(View view) {
         tvResult.setText("");
         DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
-                //是否使用系统照相机（默认使用仿微信照相机）
-                .isUseSystemCamera(false)
+                //相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
+                .cameraType(DVCameraType.NORMAL)
                 //是否需要裁剪
                 .needCrop(true)
                 //裁剪大小
@@ -293,14 +331,141 @@ public class MainActivity extends AppCompatActivity {
                 .mediaType(DVMediaType.ALL)
                 //设置录制时长
                 .maxDuration(10)
+                //闪光灯是否启用
+                .flashLightEnable(true)
                 .build();
 
-        MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListener() {
+        MediaSelectorManager.openCameraWithConfig(mActivity, config, new OnSelectMediaListener() {
             @Override
             public void onSelectMedia(List<String> li_path) {
                 for (String path : li_path) {
                     tvResult.append(path + "\n");
                 }
+            }
+        });
+    }
+
+    /**
+     * 打开美颜照相机
+     * @param view
+     */
+    public void openBeautyCamera(View view) {
+        tvResult.setText("");
+        DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
+                //相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
+                .cameraType(DVCameraType.BEAUTY)
+                //是否需要裁剪
+                .needCrop(true)
+                //裁剪大小
+                .cropSize(1, 1, 200, 200)
+                //媒体类型（如果是使用系统照相机，必须指定DVMediaType.PHOTO或DVMediaType.VIDEO）
+                .mediaType(DVMediaType.ALL)
+                //设置录制时长
+                .maxDuration(10)
+                //闪光灯是否启用
+                .flashLightEnable(true)
+                .build();
+
+        MediaSelectorManager.openCameraWithConfig(mActivity, config, new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+                for (String path : li_path) {
+                    tvResult.append(path + "\n");
+                }
+            }
+        });
+    }
+
+    /**
+     * 视频裁剪测试
+     */
+    public void videoTrim(View view){
+        tvResult.setText("");
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                // 是否多选
+                .multiSelect(false)
+                //每行显示的数量
+                .listSpanCount(4)
+                // 确定按钮文字颜色
+                .sureBtnTextColor(Color.WHITE)
+                // 使用沉浸式状态栏
+                .statusBarColor(Color.parseColor("#3F51B5"))
+                // 返回图标ResId
+                .backResourceId(R.mipmap.icon_back2)
+                //标题背景
+                .titleBgColor(Color.parseColor("#3F51B5"))
+                .mediaType(DVMediaType.VIDEO)
+                .build();
+
+        MediaSelectorManager.openSelectMediaWithConfig(mActivity, config, new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+                String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/saveFile/" + System.currentTimeMillis() + ".mp4";
+
+                startVideoTrim(li_path.get(0),savePath);
+            }
+        });
+    }
+
+    /**
+     * 开始视频剪辑
+     * @param videoPath
+     * @param savePath
+     */
+    private void startVideoTrim(String videoPath,String savePath){
+        VideoMediaManager.getInstance().setMediaPlayer(new ExoMediaPlayer(mActivity));
+        VideoMediaManager.openVideoTrimActivity(mActivity, videoPath, savePath, new OnVideoTrimListener() {
+            @Override
+            public void onVideoTrimSuccess(String savePath) {
+                Toast.makeText(mActivity,"剪辑成功-->"+savePath,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onVideoTrimError(String msg) {
+                Toast.makeText(mActivity,"剪辑失败-->"+msg,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onVideoTrimCancel() {
+                Toast.makeText(mActivity,"取消剪辑",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onVideoTrimProgress(float progress) {
+
+            }
+        });
+    }
+
+
+    /**
+     * 视频裁剪测试
+     */
+    public void videoCrop(View view){
+        tvResult.setText("");
+        DVListConfig config = MediaSelectorManager.getDefaultListConfigBuilder()
+                // 是否多选
+                .multiSelect(false)
+                //每行显示的数量
+                .listSpanCount(4)
+                // 确定按钮文字颜色
+                .sureBtnTextColor(Color.WHITE)
+                // 使用沉浸式状态栏
+                .statusBarColor(Color.parseColor("#3F51B5"))
+                // 返回图标ResId
+                .backResourceId(R.mipmap.icon_back2)
+                //标题背景
+                .titleBgColor(Color.parseColor("#3F51B5"))
+                .mediaType(DVMediaType.VIDEO)
+                .build();
+
+        MediaSelectorManager.openSelectMediaWithConfig(mActivity, config, new OnSelectMediaListener() {
+            @Override
+            public void onSelectMedia(List<String> li_path) {
+                String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/saveFile/" + System.currentTimeMillis() + ".mp4";
+
+                VideoMediaManager.getInstance().setMediaPlayer(new ExoMediaPlayer(mActivity));
+                VideoMediaManager.openVideoCropActivity(mActivity,li_path.get(0),savePath,null);
             }
         });
     }

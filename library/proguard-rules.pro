@@ -96,9 +96,15 @@
 
 
 #---------------------------------自定义配置------------------------------------
+-keep public class com.devil.library.camera.*{ *; }
 -keep public class com.devil.library.media.MediaSelectorManager{ *; }
 -keep public class com.devil.library.media.config.*{ *; }
 -keep public class com.devil.library.media.common.ImageLoader { *; }
 -keep public class com.devil.library.media.listener.OnSelectMediaListener { *; }
 -keep public class com.devil.library.media.enumtype.* { *; }
 -keep public class com.devil.library.media.utils.DVFileProvider { *; }
+-keep public class com.devil.library.video.common.* { *; }
+-keep public class com.devil.library.video.VideoMediaManager { *; }
+-keep public class com.devil.library.video.listener.* { *; }
+-keep public class com.devil.library.video.trim.listener.* { *; }
+

@@ -3,4 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="main_navigate_bar_height">44dp</dimen>
+
+
+    <dimen name="seekbar_nail_stroke_width">2.0px</dimen>
+    <dimen name="seekbar_line_width">2.0px</dimen>
+    <dimen name="seekbar_progress_height">3.0dip</dimen>
+
 </resources>

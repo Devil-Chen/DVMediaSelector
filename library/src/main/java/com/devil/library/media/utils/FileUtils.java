@@ -86,6 +86,44 @@ public class FileUtils {
         }
         return "";
     }
+    /**
+     * 递归创建文件
+     *
+     * @param filePath
+     * @return 创建失败返回""
+     */
+    public static String createFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (file.getParentFile().exists()) {
+                file.createNewFile();
+                return file.getAbsolutePath();
+            } else {
+                createDir(file.getParentFile().getAbsolutePath());
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 删除文件夹和文件夹里面的文件
+     * @param dir
+     */
+    public static void deleteDirAllFile(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory())
+            return;
+        for (File file : dir.listFiles()) {
+            if (file.isFile())
+                file.delete(); // 删除所有文件
+            else if (file.isDirectory())
+                deleteDirAllFile(file); // 递规的方式删除文件夹
+        }
+        dir.delete();// 删除目录本身
+    }
+
 
     private static boolean isSpace(final String s) {
         if (s == null) return true;
