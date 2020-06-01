@@ -1,14 +1,17 @@
 # DVMediaSelector
 [![](https://jitpack.io/v/Devil-Chen/DVMediaSelector.svg)](https://jitpack.io/#Devil-Chen/DVMediaSelector)  
   
-Android媒体资源选择库（支持图片/视频/仿微信拍照、拍视频），非常简单使用，支持图库多选、单选、仿微信拍照拍视频、系统照相机拍照拍视频。
+Android媒体资源选择库（支持图片/视频/仿微信拍照、拍视频），非常简单使用，支持图库多选、单选、仿微信拍照拍视频、系统照相机拍照拍视频，美颜滤镜照相机，图片编辑，视频编辑等。
 
 ## 预览
 ![拍摄](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/take_photo.png)  
 ![单选](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/single_select.png) 
 ![预览大图](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/preview.png)  
 ![多选](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/multiple_select.png)  
-![选择文件夹](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/folder_select.png)  
+![选择文件夹](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/folder_select.png)
+![视频裁剪](https://github.com/Devil-Chen/DVMediaSelector/blob/media_edit/screenshot/video_crop.png)
+![视频剪辑](https://github.com/Devil-Chen/DVMediaSelector/blob/media_edit/screenshot/video_trim.png)
+![图片编辑](https://github.com/Devil-Chen/DVMediaSelector/blob/media_edit/screenshot/photo_edit.png)
 
 ## 依赖
 **根bulid.gradle添加**
@@ -23,7 +26,7 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.1.1'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:2.0.0'
 }
 ```
 
@@ -151,8 +154,8 @@ public void onSelectMedia(List<String> li_path) {
 **照相机**
 ```
 DVCameraConfig config = MediaSelectorManager.getDefaultCameraConfigBuilder()
-        //是否使用系统照相机（默认使用仿微信照相机）
-        .isUseSystemCamera(false)
+        //相机的类型(系统照相机、普通照相机、美颜相机)默认普通照相机
+        .cameraType(DVCameraType.NORMAL)
         //是否需要裁剪
         .needCrop(true)
         //裁剪大小
@@ -175,5 +178,63 @@ MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListene
 });
 ```
 
-## 参考
+**视频剪辑**
+```
+String videoPath = "视频路径";
+String savePath = "保存路径（目录或者全路径都行）";
+VideoMediaManager.getInstance().setMediaPlayer(new ExoMediaPlayer(mActivity));
+VideoMediaManager.openVideoTrimActivity(mActivity, videoPath, savePath, new OnVideoTrimListener() {
+    @Override
+    public void onVideoTrimSuccess(String savePath) {
+        Toast.makeText(mActivity,"剪辑成功-->"+savePath,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimError(String msg) {
+        Toast.makeText(mActivity,"剪辑失败-->"+msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimCancel() {
+        Toast.makeText(mActivity,"取消剪辑",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimProgress(float progress) {
+
+    }
+});
+```
+
+**视频裁剪**
+```
+String videoPath = "视频路径";
+String savePath = "保存路径（目录或者全路径都行）";
+VideoMediaManager.getInstance().setMediaPlayer(new ExoMediaPlayer(mActivity));
+VideoMediaManager.openVideoCropActivity(mActivity, videoPath, savePath, new OnVideoTrimListener() {
+    @Override
+    public void onVideoTrimSuccess(String savePath) {
+        Toast.makeText(mActivity,"裁剪成功-->"+savePath,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimError(String msg) {
+        Toast.makeText(mActivity,"裁剪失败-->"+msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimCancel() {
+        Toast.makeText(mActivity,"取消裁剪",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVideoTrimProgress(float progress) {
+
+    }
+});
+```
+
+### 基于以下库简单封装了一下
 [https://github.com/CJT2325/CameraView](https://github.com/CJT2325/CameraView)
+[https://github.com/yangjie10930/EpMedia](https://github.com/yangjie10930/EpMedia)
+[https://github.com/CainKernel/CainCamera](https://github.com/CainKernel/CainCamera)

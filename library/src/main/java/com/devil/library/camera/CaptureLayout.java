@@ -20,6 +20,10 @@ import com.devil.library.camera.listener.ClickListener;
 import com.devil.library.camera.listener.ReturnListener;
 import com.devil.library.camera.listener.TypeListener;
 
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_BOTH;
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_ONLY_CAPTURE;
+import static com.devil.library.camera.JCameraView.BUTTON_STATE_ONLY_RECORDER;
+
 
 /**
  * =====================================
@@ -64,7 +68,8 @@ public class CaptureLayout extends FrameLayout {
     private int iconLeft = 0;
     private int iconRight = 0;
 
-    private boolean isFirst = true;
+    private boolean isFirstTip = true;
+    private int currentState = BUTTON_STATE_BOTH;
 
     public CaptureLayout(Context context) {
         this(context, null);
@@ -157,7 +162,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureListener != null) {
                     captureListener.recordShort(time);
                 }
-                startAlphaAnimation();
+//                startAlphaAnimation();
             }
 
             @Override
@@ -165,7 +170,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureListener != null) {
                     captureListener.recordStart();
                 }
-                startAlphaAnimation();
+//                startAlphaAnimation();
             }
 
             @Override
@@ -173,7 +178,7 @@ public class CaptureLayout extends FrameLayout {
                 if (captureListener != null) {
                     captureListener.recordEnd(time);
                 }
-                startAlphaAnimation();
+//                startAlphaAnimation();
                 startTypeBtnAnimator();
             }
 
@@ -274,7 +279,7 @@ public class CaptureLayout extends FrameLayout {
         LayoutParams txt_param = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         txt_param.gravity = Gravity.CENTER_HORIZONTAL;
         txt_param.setMargins(0, 0, 0, 0);
-        txt_tip.setText("轻触拍照，长按摄像");
+//        txt_tip.setText("轻触拍照，长按摄像");
         txt_tip.setTextColor(0xFFFFFFFF);
         txt_tip.setGravity(Gravity.CENTER);
         txt_tip.setLayoutParams(txt_param);
@@ -286,6 +291,7 @@ public class CaptureLayout extends FrameLayout {
         this.addView(iv_custom_left);
         this.addView(iv_custom_right);
         this.addView(txt_tip);
+
 
     }
 
@@ -307,12 +313,9 @@ public class CaptureLayout extends FrameLayout {
 
 
     public void startAlphaAnimation() {
-        if (isFirst) {
-            ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 1f, 0f);
-            animator_txt_tip.setDuration(500);
-            animator_txt_tip.start();
-            isFirst = false;
-        }
+        ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 1f, 0f);
+        animator_txt_tip.setDuration(500);
+        animator_txt_tip.start();
     }
 
     public void setTextWithAnimation(String tip) {
@@ -328,6 +331,28 @@ public class CaptureLayout extends FrameLayout {
 
     public void setButtonFeatures(int state) {
         btn_capture.setButtonFeatures(state);
+        currentState = state;
+        if (isFirstTip){
+            isFirstTip = false;
+            if (state == BUTTON_STATE_ONLY_RECORDER){
+                setTextWithAnimation("长按摄像");
+            }else if(state == BUTTON_STATE_ONLY_CAPTURE){
+                setTextWithAnimation("轻触拍照");
+            }else{
+                setTextWithAnimation("轻触拍照，长按摄像");
+            }
+        }
+
+    }
+
+    public String getDefaultStateTip(){
+        if (currentState == BUTTON_STATE_ONLY_RECORDER){
+            return "长按摄像";
+        }else if(currentState == BUTTON_STATE_ONLY_CAPTURE){
+            return "轻触拍照";
+        }else{
+            return "轻触拍照，长按摄像";
+        }
     }
 
     public void setTip(String tip) {
@@ -336,6 +361,7 @@ public class CaptureLayout extends FrameLayout {
 
     public void showTip() {
         txt_tip.setVisibility(VISIBLE);
+//        txt_tip.setAlpha(1);
     }
 
     public void setIconSrc(int iconLeft, int iconRight) {

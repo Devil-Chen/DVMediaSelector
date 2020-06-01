@@ -10,9 +10,14 @@
         android:layout_height="match_parent">
 
         <com.devil.library.camera.view.DVTextureView
-            android:id="@+id/mVideoView"
+            android:id="@+id/mTextureView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <SurfaceView
+            android:id="@+id/mPlayerSurface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/image_photo"

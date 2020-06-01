@@ -2,6 +2,7 @@ package com.devil.library.camera.util;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -52,6 +53,7 @@ public class FileUtil {
     }
 
     public static boolean deleteFile(String url) {
+        if (TextUtils.isEmpty(url)) return true;
         boolean result = false;
         File file = new File(url);
         if (file.exists()) {

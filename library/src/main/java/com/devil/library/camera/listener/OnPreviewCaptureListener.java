@@ -18,6 +18,10 @@ public interface OnPreviewCaptureListener {
     @Retention(RetentionPolicy.SOURCE)
     @interface MediaType {}
 
-    // 拍摄完成
+    /**
+     * 拍摄完成
+     * @param path 资源保存路径，为null则拍摄失败
+     * @param type 拍照/视频
+     */
     void onPreviewCapture(String path, @MediaType int type);
 }

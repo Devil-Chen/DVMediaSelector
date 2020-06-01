@@ -8,19 +8,15 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Looper;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -64,7 +60,9 @@ import java.io.IOException;
  */
 public class DVCameraView extends FrameLayout implements View.OnClickListener {
 //    private static final String TAG = "JCameraView";
-
+    public static final int BUTTON_STATE_ONLY_CAPTURE = 0x101;      //只能拍照
+    public static final int BUTTON_STATE_ONLY_RECORDER = 0x102;     //只能录像
+    public static final int BUTTON_STATE_BOTH = 0x103;              //两者都可以
 
     //闪关灯状态
     private boolean flashStatus = false;
@@ -77,10 +75,6 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     //当前拍照类型
     private int currentTakeType = TYPE_DEFAULT;
 
-    public static final int BUTTON_STATE_ONLY_CAPTURE = 0x101;      //只能拍照
-    public static final int BUTTON_STATE_ONLY_RECORDER = 0x102;     //只能录像
-    public static final int BUTTON_STATE_BOTH = 0x103;              //两者都可以
-
 
     //回调监听
     private JCameraListener jCameraListener;
@@ -90,7 +84,7 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     private Context mContext;
     //整个布局
     private View mContentView;
-    private DVTextureView mVideoView;
+    private DVTextureView mTextureView;
     private ImageView mPhoto;
     private ImageView mSwitchCamera;
     private ImageView mFlashLamp;
@@ -99,10 +93,10 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     private MediaPlayer mMediaPlayer;
 
     private int layout_width;
-    private float screenProp = 0f;
 
     private Bitmap captureBitmap;   //捕获的图片
-    private Bitmap firstFrame;      //第一帧图片
+    private String firstFramePath;  //录制视频第一帧图片地址
+    private Bitmap firstFrame;      //录制视频第一帧图片
     private String videoUrl;        //视频保存URL
 
 
@@ -114,8 +108,6 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     private int iconRight = 0;      //右图标
     private int duration = 0;       //录制时间
 
-    private boolean firstTouch = true;
-    private float firstTouchLength = 0;
     //预览管理
     private CameraPreviewPresenter mPreviewPresenter;
     //默认视频输出父路径
@@ -136,8 +128,8 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     private TipLoadDialog loadDialog;
     //是否录制时间太短
     private boolean isRecordTooShort;
-    //播放视频的Surface（基于DVTextureView的SurfaceTexture生成）
-    private Surface mPlayerSurface;;
+    //播放视频的Surface
+    private SurfaceView mPlayerSurface;;
     //闪光灯是否启用
     private boolean flashLightEnable;
 
@@ -222,10 +214,11 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         mPreviewPresenter = new CameraPreviewPresenter(this);
         mPreviewPresenter.setVideoSaveDir(saveVideoDirPath);
         mPreviewPresenter.setRecordSeconds(this.duration / 1000);
-        mVideoView = (DVTextureView) mContentView.findViewById(R.id.mVideoView);
-        mVideoView = mContentView.findViewById(R.id.mVideoView);
-        mVideoView.addMultiClickListener(mMultiClickListener);
-        mVideoView.setSurfaceTextureListener(mSurfaceTextureListener);
+        mTextureView = mContentView.findViewById(R.id.mTextureView);
+
+        //视频播放
+        mPlayerSurface = mContentView.findViewById(R.id.mPlayerSurface);
+
     }
 
     /**
@@ -259,6 +252,13 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         sb_adjust.setOnSeekBarChangeListener(beautyParamsChangeListener);
         sb_complexionLevel.setOnSeekBarChangeListener(beautyParamsChangeListener);
 
+        //摄像头显示view
+        mTextureView.addMultiClickListener(mMultiClickListener);
+        mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
+
+        //录像播放
+        mPlayerSurface.getHolder().addCallback(surfaceHolderCallback);
+
         //切换摄像头
         mSwitchCamera.setOnClickListener(this);
 
@@ -284,9 +284,9 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
             public void recordShort(final long time) {
                 currentTakeType = TYPE_SHORT;
                 mCaptureLayout.setTextWithAnimation("录制时间过短");
-                line_topIcon.setVisibility(INVISIBLE);
-                //删除录制的文件
+                //停止录制视频
                 mPreviewPresenter.stopRecord();
+                //删除录制的文件
                 isRecordTooShort = true;
             }
 
@@ -321,15 +321,19 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         mCaptureLayout.setTypeListener(new TypeListener() {
             @Override
             public void cancel() {
-                setTip("轻触拍照，长按摄像");
-                mCaptureLayout.setTextWithAnimation("轻触拍照，长按摄像");
+
                 if (currentTakeType == TYPE_VIDEO){
+                    //停止播放视频
                     stopVideo();
-                    mPreviewPresenter.doStartPreview(mVideoView.getSurfaceTexture());
+                    //删除录像文件
+                    if (!TextUtils.isEmpty(videoUrl)) FileUtil.deleteFile(videoUrl);
                 }else{
                     mPreviewPresenter.onResume();
                 }
+                //重置默认状态
                 resetState();
+                //                setTip("轻触拍照，长按摄像");
+                mCaptureLayout.setTextWithAnimation(mCaptureLayout.getDefaultStateTip());
             }
 
             @Override
@@ -388,23 +392,39 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
     private OnPreviewCaptureListener captureListener = new OnPreviewCaptureListener() {
         @Override
         public void onPreviewCapture(String path, int type) {
+            //此回调在子线程，需要操作view要切换到主线程。
+            if (TextUtils.isEmpty(path)){
+                post(()->{
+                    //切换主线程重置状态
+                    resetState();
+                });
+                return;
+            }
             if (type == OnPreviewCaptureListener.MediaTypePicture){//图片
                 Bitmap bitmap = BitmapFactory.decodeFile(path);
                 if (currentTakeType == TYPE_VIDEO){
+                    firstFramePath = path;
                     firstFrame = bitmap;
                 }else{
                     showPicture(bitmap,true);
                     captureBitmap = bitmap;
                 }
             }else{//视频
+                videoUrl = path;
                 if (isRecordTooShort){//录制时间太短直接删除文件
+                    post(()->{
+                        //切换主线程重置状态
+                        resetState();
+                    });
+                    //删除录制的文件
                     FileUtil.deleteFile(path);
+                    FileUtil.deleteFile(firstFramePath);
                     isRecordTooShort = false;
                 }else{
-                    videoUrl = path;
+                    //切换主线程
                     post(()->{
                         mPreviewPresenter.doStopPreview();
-                        playVideo(firstFrame,videoUrl);
+                        mPlayerSurface.setVisibility(VISIBLE);
                     });
                 }
             }
@@ -442,6 +462,79 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
             } else {
                 mPreviewPresenter.changeDynamicFilter(null);
             }
+        }
+    };
+
+    /**
+     * 单双击回调监听
+     */
+    private DVTextureView.OnMultiClickListener mMultiClickListener = new DVTextureView.OnMultiClickListener() {
+
+        @Override
+        public void onSurfaceSingleClick(final float x, final float y) {
+            // 单击
+            //如果滤镜正在选择状态，先取消滤镜选择布局
+            if (mFilterLayout.getVisibility() == View.VISIBLE || line_beautySeekBar.getVisibility() == View.VISIBLE){
+                hideBeautySeekBar();
+                hideFilterLayout();
+                if (mCaptureLayout.getVisibility() == View.GONE){
+                    mCaptureLayout.setVisibility(View.VISIBLE);
+                }
+            }else{
+                //显示对焦指示器
+                setFocusViewWidthAnimation(x, y);
+            }
+
+        }
+
+        @Override
+        public void onSurfaceDoubleClick(float x, float y) {
+            // 双击
+        }
+
+    };
+    // ---------------------------- TextureView SurfaceTexture监听 ---------------------------------
+    private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
+        @Override
+        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            mPreviewPresenter.onSurfaceCreated(surface);
+            mPreviewPresenter.onSurfaceChanged(width, height);
+
+        }
+
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            mPreviewPresenter.onSurfaceChanged(width, height);
+
+        }
+
+        @Override
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            mPreviewPresenter.onSurfaceDestroyed();
+            return true;
+        }
+
+        @Override
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+
+        }
+    };
+    // ---------------------------- 播放录制视频的 SurfaceView监听 ---------------------------------
+    SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            //一创建就播放（显示就会创建，隐藏就会销毁）
+            playVideo(firstFrame,videoUrl);
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+
         }
     };
 
@@ -549,7 +642,7 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
             int height = (int) ((videoHeight / videoWidth) * getWidth());
             videoViewParam = new LayoutParams(LayoutParams.MATCH_PARENT, height);
             videoViewParam.gravity = Gravity.CENTER;
-            mVideoView.setLayoutParams(videoViewParam);
+            mTextureView.setLayoutParams(videoViewParam);
         }
     }
 
@@ -584,19 +677,7 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         if (currentTakeType == TYPE_DEFAULT){
             return;
         }
-        switch (currentTakeType) {
-            case TYPE_VIDEO:
-                stopVideo();    //停止播放
-                //初始化VideoView
-                FileUtil.deleteFile(videoUrl);
-                break;
-            case TYPE_PICTURE:
-                mPhoto.setVisibility(INVISIBLE);
-                break;
-            case TYPE_SHORT:
-                break;
 
-        }
         defaultState();
 
     }
@@ -605,9 +686,9 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
      * 默认的状态设置
      */
     private void defaultState(){
-        if (mVideoView.getVisibility() == INVISIBLE){
-            mVideoView.setVisibility(VISIBLE);
-        }
+//        if (mTextureView.getVisibility() == INVISIBLE){
+//            mTextureView.setVisibility(VISIBLE);
+//        }
         if (mPhoto.getVisibility() == VISIBLE){
             mPhoto.setVisibility(INVISIBLE);
         }
@@ -617,6 +698,9 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         mCaptureLayout.resetCaptureLayout();
         //停止视频
         stopVideo();
+        if (currentTakeType == TYPE_VIDEO){
+            mPreviewPresenter.doStartPreview();
+        }
         //重置数据
         currentTakeType = TYPE_DEFAULT;
         captureBitmap = null;
@@ -707,10 +791,8 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
             }
 
             mMediaPlayer.setDataSource(url);
-            if (mPlayerSurface == null) {
-                mPlayerSurface = new Surface(mVideoView.getSurfaceTexture());
-            }
-            mMediaPlayer.setSurface(mPlayerSurface);
+
+            mMediaPlayer.setSurface(mPlayerSurface.getHolder().getSurface());
 
             mMediaPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -723,13 +805,17 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
                             .getVideoHeight());
                 }
             });
+
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
 
-//                    mVideoView.setVisibility(INVISIBLE);
-                    mPhoto.setVisibility(INVISIBLE);
+//                    mPlayerSurface.setVisibility(VISIBLE);
                     mMediaPlayer.start();
+                    postDelayed(()->{
+                        mPhoto.setVisibility(INVISIBLE);
+                        FileUtil.deleteFile(firstFramePath);
+                    },100);
 //                    mCaptureLayout.setTextWithAnimation("录制完成");
                     dismissLoadingDialog();
 
@@ -737,6 +823,7 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
             });
             mMediaPlayer.setLooping(true);
             mMediaPlayer.prepareAsync();
+
         } catch (Exception e) {
             resetState();
             dismissLoadingDialog();
@@ -750,15 +837,21 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
      * 停止视频播放
      */
     public void stopVideo() {
+
         if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
             mMediaPlayer.stop();
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-
+        if (mPlayerSurface.getVisibility() == View.VISIBLE){
+            mPlayerSurface.setVisibility(View.INVISIBLE);
+        }
     }
 
-
+    /**
+     * 设置提示信息
+     * @param tip
+     */
     public void setTip(String tip) {
         mCaptureLayout.setTip(tip);
         mCaptureLayout.showTip();
@@ -861,61 +954,6 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    /**
-     * 单双击回调监听
-     */
-    private DVTextureView.OnMultiClickListener mMultiClickListener = new DVTextureView.OnMultiClickListener() {
-
-        @Override
-        public void onSurfaceSingleClick(final float x, final float y) {
-            // 单击
-            //如果滤镜正在选择状态，先取消滤镜选择布局
-            if (mFilterLayout.getVisibility() == View.VISIBLE || line_beautySeekBar.getVisibility() == View.VISIBLE){
-                hideBeautySeekBar();
-                hideFilterLayout();
-                if (mCaptureLayout.getVisibility() == View.GONE){
-                    mCaptureLayout.setVisibility(View.VISIBLE);
-                }
-            }else{
-                //显示对焦指示器
-                setFocusViewWidthAnimation(x, y);
-            }
-
-        }
-
-        @Override
-        public void onSurfaceDoubleClick(float x, float y) {
-            // 单击
-        }
-
-    };
-    // ---------------------------- TextureView SurfaceTexture监听 ---------------------------------
-    private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            mPreviewPresenter.onSurfaceCreated(surface);
-            mPreviewPresenter.onSurfaceChanged(width, height);
-
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            mPreviewPresenter.onSurfaceChanged(width, height);
-
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            mPreviewPresenter.onSurfaceDestroyed();
-
-            return true;
-        }
-
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-        }
-    };
 
     // ---------------------------- 生命周期（在activity中调用） ---------------------------------
     public void onCreate(Activity activity) {

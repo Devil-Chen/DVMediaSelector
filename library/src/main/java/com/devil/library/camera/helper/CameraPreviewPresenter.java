@@ -42,6 +42,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import VideoHandle.EpEditor;
+import VideoHandle.OnEditorListener;
+
 //import VideoHandle.EpEditor;
 //import VideoHandle.OnEditorListener;
 
@@ -384,9 +387,9 @@ public class CameraPreviewPresenter implements PreviewCallback, OnCaptureListene
     /**
      * 开始预览
      */
-    public void doStartPreview(SurfaceTexture surfaceTexture){
-        onSurfaceCreated(surfaceTexture);
-        onSurfaceChanged(width, height);
+    public void doStartPreview(){
+//        onSurfaceCreated(surfaceTexture);
+//        onSurfaceChanged(width, height);
         mCameraController.doStartPreview();
     }
 
@@ -394,7 +397,7 @@ public class CameraPreviewPresenter implements PreviewCallback, OnCaptureListene
      * 停止预览
      */
     public void doStopPreview(){
-        mCameraRenderer.release();
+//        mCameraRenderer.release();
         mCameraController.doStopPreview();
     }
 
@@ -517,30 +520,32 @@ public class CameraPreviewPresenter implements PreviewCallback, OnCaptureListene
         }
         if (mHWMediaRecorder.enableAudio()){
             final File currentFile = FileUtils.createFile(videoSaveDir,"DVCamera_" + System.currentTimeMillis() + ".mp4");
-//            EpEditor.music(mVideoInfo.getFileName(), mAudioInfo.getFileName(), currentFile.getAbsolutePath(), 1, 1, new OnEditorListener() {
-//                @Override
-//                public void onSuccess() {
-//
-//                    // 删除旧的文件
-//                    FileUtils.deleteFile(mAudioInfo.getFileName());
-//                    FileUtils.deleteFile(mVideoInfo.getFileName());
-//                    mAudioInfo = null;
-//                    mVideoInfo = null;
-//                    if (captureListener != null) {
-//                        captureListener.onPreviewCapture(currentFile.getAbsolutePath(), OnPreviewCaptureListener.MediaTypeVideo);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure() {
-//
-//                }
-//
-//                @Override
-//                public void onProgress(float progress) {
-//
-//                }
-//            });
+            EpEditor.music(mVideoInfo.getFileName(), mAudioInfo.getFileName(), currentFile.getAbsolutePath(), 1, 1, new OnEditorListener() {
+                @Override
+                public void onSuccess() {
+
+                    // 删除旧的文件
+                    FileUtils.deleteFile(mAudioInfo.getFileName());
+                    FileUtils.deleteFile(mVideoInfo.getFileName());
+                    mAudioInfo = null;
+                    mVideoInfo = null;
+                    if (captureListener != null) {
+                        captureListener.onPreviewCapture(currentFile.getAbsolutePath(), OnPreviewCaptureListener.MediaTypeVideo);
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+                    if (captureListener != null) {
+                        captureListener.onPreviewCapture(null, OnPreviewCaptureListener.MediaTypeVideo);
+                    }
+                }
+
+                @Override
+                public void onProgress(float progress) {
+
+                }
+            });
         }
 
         if (mHWMediaRecorder != null) {

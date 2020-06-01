@@ -54,7 +54,8 @@ public class CameraController implements Camera.PreviewCallback {
     private HandlerThread mOutputThread;
     // 上下文
     private final Activity mActivity;
-
+    //是否正在停止中
+    private boolean isStopping = false;
 
     public CameraController(@NonNull Activity activity) {
         mActivity = activity;
@@ -456,35 +457,14 @@ public class CameraController implements Camera.PreviewCallback {
      * 重新开始预览
      */
     public void doStartPreview(){
-        if (mCamera == null) return;
-        CameraParam cameraParam = CameraParam.getInstance();
-        cameraParam.cameraId = mCameraId;
-        Camera.Parameters parameters = mCamera.getParameters();
-        cameraParam.supportFlash = CameraApi.checkSupportFlashLight(parameters);
-        cameraParam.previewFps = CameraApi.chooseFixedPreviewFps(parameters, mExpectFps * 1000);
-        parameters.setRecordingHint(true);
-        // 后置摄像头自动对焦
-        if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK
-                && CameraApi.supportAutoFocusFeature(parameters)) {
-            mCamera.cancelAutoFocus();
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        }
-        mCamera.setParameters(parameters);
-        setPreviewSize(mCamera, mPreviewWidth, mPreviewHeight);
-        setPictureSize(mCamera, mPreviewWidth, mPreviewHeight);
-        mOrientation = calculateCameraPreviewOrientation(mActivity);
-        mCamera.setDisplayOrientation(mOrientation);
-        releaseSurfaceTexture();
-        mOutputTexture = createDetachedSurfaceTexture();
+        if (mCamera == null || !isStopping) return;
         try {
             mCamera.setPreviewTexture(mOutputTexture);
             mCamera.setPreviewCallback(this);
+            mCamera.startPreview();
+            isStopping = false;
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        mCamera.startPreview();
-        if (mSurfaceTextureListener != null) {
-            mSurfaceTextureListener.onSurfaceTexturePrepared(mOutputTexture);
         }
     }
 
@@ -493,14 +473,9 @@ public class CameraController implements Camera.PreviewCallback {
      */
     public void doStopPreview() {
         if (null != mCamera) {
-            try {
-                mCamera.setPreviewCallback(null);
-                mCamera.stopPreview();
-                //这句要在stopPreview后执行，不然会卡顿或者花屏
-                mCamera.setPreviewDisplay(null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mCamera.setPreviewCallback(null);
+            mCamera.stopPreview();
+            isStopping = true;
         }
     }
 }

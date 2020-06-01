@@ -220,6 +220,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 mSwitchCamera.setVisibility(INVISIBLE);
                 mFlashLamp.setVisibility(INVISIBLE);
                 machine.record(mVideoView.getHolder().getSurface(), screenProp);
+                mCaptureLayout.setTextWithAnimation("开始录制");
             }
 
             @Override
@@ -238,6 +239,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void recordEnd(long time) {
                 machine.stopRecord(false, time);
+                mCaptureLayout.setTextWithAnimation("录制完成");
             }
 
             @Override
@@ -258,6 +260,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
+                mCaptureLayout.setTextWithAnimation(mCaptureLayout.getDefaultStateTip());
             }
 
             @Override

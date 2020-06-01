@@ -148,11 +148,11 @@ public class DVBeautyCameraActivity extends DVBaseActivity {
 
         //设置只能录像或只能拍照或两种都可以（默认两种都可以）
         if (config.mediaType == DVMediaType.ALL){//都可以
-            cameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH);
+            cameraView.setFeatures(DVCameraView.BUTTON_STATE_BOTH);
         }else if(config.mediaType == DVMediaType.PHOTO){//只拍照
-            cameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_CAPTURE);
+            cameraView.setFeatures(DVCameraView.BUTTON_STATE_ONLY_CAPTURE);
         }else if(config.mediaType == DVMediaType.VIDEO){//只录像
-            cameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
+            cameraView.setFeatures(DVCameraView.BUTTON_STATE_ONLY_RECORDER);
         }
 
         //设置最大录制时长
