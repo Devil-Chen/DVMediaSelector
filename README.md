@@ -178,6 +178,20 @@ MediaSelectorManager.openCameraWithConfig(this, config, new OnSelectMediaListene
 });
 ```
 
+**图片编辑**
+```
+String photoPath = "图片地址";
+MediaSelectorManager.openEditPhoto(mActivity, photoPath, config, new OnSelectMediaListener() {
+    @Override
+    public void onSelectMedia(List<String> li_path) {
+        //编辑后的图片地址
+        for (String path : li_path) {
+            tvResult.append(path + "\n");
+        }
+    }
+});
+```
+
 **视频剪辑**
 ```
 String videoPath = "视频路径";
