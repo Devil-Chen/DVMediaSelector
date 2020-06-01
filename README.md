@@ -1,7 +1,7 @@
 # DVMediaSelector
 [![](https://jitpack.io/v/Devil-Chen/DVMediaSelector.svg)](https://jitpack.io/#Devil-Chen/DVMediaSelector)  
   
-Android媒体资源选择库（支持图片/视频/仿微信拍照、拍视频），非常简单使用，支持图库多选、单选、仿微信拍照拍视频、系统照相机拍照拍视频。
+Android媒体资源选择库（支持图片/视频/仿微信拍照、拍视频），非常简单使用，支持图库多选、单选、仿微信拍照拍视频、系统照相机拍照拍视频。如需使用美颜滤镜、简单图片编辑，ffmpeg视频编辑等，请使用v2.0.0，或切换分支[media_edit](https://github.com/Devil-Chen/DVMediaSelector/tree/media_edit)。
 
 ## 预览
 ![拍摄](https://github.com/Devil-Chen/DVMediaSelector/blob/master/screenshot/take_photo.png)  
