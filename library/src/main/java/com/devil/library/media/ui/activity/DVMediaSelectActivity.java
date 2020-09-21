@@ -263,7 +263,7 @@ public class DVMediaSelectActivity extends DVBaseActivity implements View.OnClic
         if (MediaTempListener.listener != null){
             MediaTempListener.listener.onSelectMedia(li_path);
         }
-        onBackPressed();
+        finish();
     }
 
 
