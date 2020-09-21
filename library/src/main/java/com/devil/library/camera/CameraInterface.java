@@ -361,6 +361,7 @@ public class CameraInterface implements Camera.PreviewCallback {
     public void doStartPreview(SurfaceHolder holder, float screenProp) {
         if (isPreviewing) {
             LogUtil.i("doStartPreview isPreviewing");
+            doStopPreview();
         }
         if (this.screenProp < 0) {
             this.screenProp = screenProp;
