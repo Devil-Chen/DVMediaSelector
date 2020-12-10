@@ -1,5 +1,6 @@
 package com.devil.library.video.utils;
 
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -14,9 +15,8 @@ public class MeasureHelper {
     public static final int SCREEN_SCALE_MATCH_PARENT = 4;
     public static final int SCREEN_SCALE_ORIGINAL = 5;
     public static final int SCREEN_SCALE_CENTER_CROP = 6;
-    public static final int SCREEN_SCALE_BY_SELF = 7;//自定义宽高比
-    //是否保持视频原始宽高比
-    private boolean isKeepVideoOriginalRatio = true;
+    public static final int SCREEN_SCALE_BY_SELF = 7;//自定义宽高比 -- 适用于裁剪视频，让视频宽高大于等于裁剪框
+
     //视频真实宽度
     private float mVideoWidth;
     //视频真实高度
@@ -115,19 +115,15 @@ public class MeasureHelper {
             case SCREEN_SCALE_16_9:
                 if (height > width / 16 * 9) {
                     height = width / 16 * 9;
-                    width = getCorrectWidth(width,height);
                 } else {
                     width = height / 9 * 16;
-                    height = getCorrectHeight(width,height);
                 }
                 break;
             case SCREEN_SCALE_4_3:
                 if (height > width / 4 * 3) {
                     height = width / 4 * 3;
-                    width = getCorrectWidth(width,height);
                 } else {
                     width = height / 3 * 4;
-                    height = getCorrectHeight(width,height);
                 }
                 break;
             case SCREEN_SCALE_MATCH_PARENT:
@@ -148,13 +144,20 @@ public class MeasureHelper {
                     width = height * 1;
                 }
                 break;
-            case SCREEN_SCALE_BY_SELF:
-                if (height > width / videoWidthRatio * videoHeightRatio) {
-                    height = width / videoWidthRatio * videoHeightRatio;
-                    width = getCorrectWidth(width,height);
-                } else {
-                    width = height / videoHeightRatio * videoWidthRatio;
-                    height = getCorrectHeight(width,height);
+            case SCREEN_SCALE_BY_SELF://适用于裁剪视频，让视频宽高大于等于裁剪框
+                //尝试某边到达屏幕后是否满足需求宽高比
+                if (height > width / videoWidthRatio * videoHeightRatio) {//横屏视频
+                    height = width * mVideoHeight / mVideoWidth;
+                    if ((width / height) > (videoWidthRatio / videoHeightRatio)){//判断宽高比是否为需求的宽高比
+                        height = getCorrectHeight(width,height);
+                        width = height / mVideoHeight * mVideoWidth;
+                    }
+                } else {//竖屏视频
+                    width = height / mVideoHeight * mVideoWidth;
+                    if ((width / height) < (videoWidthRatio / videoHeightRatio)){//判断宽高比是否为需求的宽高比
+                        width = getCorrectWidth(width,height);
+                        height = width * mVideoHeight / mVideoWidth;
+                    }
                 }
                 break;
         }
@@ -168,38 +171,31 @@ public class MeasureHelper {
     }
 
     /**
-     * 根据高度比，获取显示的正确视频宽度
-     * @return
-     */
-    private float getCorrectWidth(float width,float height){
-       float finalWidth = 0;
-       if (isKeepVideoOriginalRatio){
-           finalWidth = mVideoWidth * (height / mVideoHeight);
-       }else{
-           finalWidth = width;
-       }
-       return finalWidth;
-    }
-
-    /**
-     * 根据高度比，获取显示的正确视频高度
+     * 根据高度比，获取显示的正确视频高度（横屏）
      * @return
      */
     private float getCorrectHeight(float width,float height){
-        float finalHeight = 0;
-        if (isKeepVideoOriginalRatio){
-            finalHeight = mVideoHeight * (width / mVideoWidth);
-        }else{
-            finalHeight = height;
+        height *= 1.1;
+        float nowRatio = width / height;
+        float oldRatio = videoWidthRatio / videoHeightRatio;
+        if (nowRatio > oldRatio){//判断宽高比是否为需求的宽高比
+            height = getCorrectHeight(width,height);
         }
-        return finalHeight;
+        return height;
     }
 
     /**
-     * 是否保持原视频宽高比例显示（默认true，为false时视频显示可能会拉伸）
+     * 根据高度比，获取显示的正确视频宽度（竖屏）
+     * @return
      */
-    public void setKeepVideoOriginalRatio(boolean isKeepVideoOriginalRatio){
-        this.isKeepVideoOriginalRatio = isKeepVideoOriginalRatio;
+    private float getCorrectWidth(float width,float height){
+        width *= 1.1;
+        float nowRatio = height / width;
+        float oldRatio = videoHeightRatio / videoWidthRatio;
+        if (nowRatio > oldRatio){//判断宽高比是否为需求的宽高比
+            width = getCorrectWidth(width,height);
+        }
+        return width;
     }
 
     /**
