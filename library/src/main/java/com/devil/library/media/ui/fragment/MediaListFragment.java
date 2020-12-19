@@ -38,6 +38,7 @@ import com.devil.library.media.utils.LayoutManagerHelper;
 import com.devil.library.media.utils.MediaDataUtils;
 import com.miyouquan.library.DVPermissionUtils;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -324,14 +325,14 @@ public class MediaListFragment extends Fragment {
             MediaDataUtils.getAllPhotoInfo(mContext, new MediaDataUtils.OnLoadCallBack() {
                 @Override
                 public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allPhotos) {
-                    afterLoadDataSuccess(allPhotos);
+                    afterLoadDataSuccess(allPhotos,null);
                 }
             });
         }else if (config.mediaType == DVMediaType.VIDEO){//加载视频数据
             MediaDataUtils.getAllVideoInfo(mContext,config.quickLoadVideoThumb, new MediaDataUtils.OnLoadCallBack() {
                 @Override
                 public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allVideos) {
-                    afterLoadDataSuccess(allVideos);
+                    afterLoadDataSuccess(null,allVideos);
                 }
             });
         }else{//加载所有
@@ -341,22 +342,7 @@ public class MediaListFragment extends Fragment {
                     MediaDataUtils.getAllVideoInfo(mContext,config.quickLoadVideoThumb, new MediaDataUtils.OnLoadCallBack() {
                         @Override
                         public void onLoadSuccess(HashMap<String, ArrayList<MediaInfo>> allVideos) {
-                            HashMap<String, ArrayList<MediaInfo>> allFile = new HashMap<>();
-                            allFile.putAll(allPhotos);
-                            Set<String> keySet = allVideos.keySet();
-                            Iterator<String> iterator = keySet.iterator();
-                            while (iterator.hasNext()){
-                                String key = iterator.next();
-                                if (allFile.get(key) != null){
-                                    ArrayList<MediaInfo> sourceArray = allFile.get(key);
-                                    ArrayList<MediaInfo> videoArray = allVideos.get(key);
-                                    sourceArray.addAll(videoArray);
-                                    allFile.put(key,sourceArray);
-                                }else{
-                                    allFile.put(key,allVideos.get(key));
-                                }
-                            }
-                            afterLoadDataSuccess(allFile);
+                            afterLoadDataSuccess(allPhotos,allVideos);
                         }
                     });
                 }
@@ -366,41 +352,87 @@ public class MediaListFragment extends Fragment {
 
     /**
      * 加载数据成功后执行的操作
-     * @param allMedia
+     * @param allPhotos
+     * @param allVideos
      */
-    private void afterLoadDataSuccess(HashMap<String, ArrayList<MediaInfo>> allMedia){
+    private void afterLoadDataSuccess(final HashMap<String, ArrayList<MediaInfo>> allPhotos,final HashMap<String, ArrayList<MediaInfo>> allVideos){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HashMap<String, ArrayList<MediaInfo>> allMedia = getRealAllMedia(allPhotos,allVideos);
 
+                //所有文件的list
+                ArrayList<MediaInfo> li_AllInfo = new ArrayList<>();
 
-        //所有文件的list
-        ArrayList<MediaInfo> li_AllInfo = new ArrayList<>();
+                //获取数据
+                Set<String> keySet = allMedia.keySet();
+                Iterator<String> iterator = keySet.iterator();
+                while(iterator.hasNext()){
+                    //获取key
+                    String key = iterator.next();
+                    //获取文件夹所存列表信息
+                    ArrayList<MediaInfo> li_info = allMedia.get(key);
+                    //加入到map
+                    map_allMedia.put(key,li_info);
+                    //保存文件夹名称
+                    li_folder.add(FolderInfo.createInstance(FileUtils.getFileName(key),key,li_info.size()));
+                    //计算总数
+                    fileCount += li_info.size();
+                    //把子文件夹的list加到全部文件的list
+                    li_AllInfo.addAll(li_info);
+                }
+                MediaDataUtils.sortByModifiedTime(li_AllInfo);
+                //增加 所有文件 选择
+                map_allMedia.put(fileAll,li_AllInfo);
+                //增加 所有文件夹名称
+                li_folder.add(0,FolderInfo.createInstance(fileAll,fileAll,fileCount));
 
-        //获取数据
-        Set<String> keySet = allMedia.keySet();
-        Iterator<String> iterator = keySet.iterator();
-        while(iterator.hasNext()){
-            //获取key
-            String key = iterator.next();
-            //获取文件夹所存列表信息
-            ArrayList<MediaInfo> li_info = allMedia.get(key);
-            //加入到map
-            map_allMedia.put(key,li_info);
-            //保存文件夹名称
-            li_folder.add(FolderInfo.createInstance(FileUtils.getFileName(key),key,li_info.size()));
-            //计算总数
-            fileCount += li_info.size();
-            //把子文件夹的list加到全部文件的list
-            li_AllInfo.addAll(li_info);
-        }
-        //增加 所有文件 选择
-        map_allMedia.put(fileAll,li_AllInfo);
-        //增加 所有文件夹名称
-        li_folder.add(0,FolderInfo.createInstance(fileAll,fileAll,fileCount));
+                //设置当前需要显示的list
+                currentListContent.addAll(li_AllInfo);
 
-        //设置当前需要显示的list
-        currentListContent.addAll(li_AllInfo);
-        //设置适配器
-        setUpAdapter();
+                //设置适配器
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //设置适配器
+                        setUpAdapter();
+                    }
+                });
+            }
+        }).start();
+
     }
 
+    /**
+     * 获取选择的数据
+     * @param allPhotos 选择的图片数据
+     * @param allVideos 选择的视频数据
+     * @return 最后选择的数据
+     */
+    private HashMap<String, ArrayList<MediaInfo>> getRealAllMedia(HashMap<String, ArrayList<MediaInfo>> allPhotos,HashMap<String, ArrayList<MediaInfo>> allVideos){
+        if (allPhotos != null && allVideos == null){
+            return allPhotos;
+        }else if(allPhotos == null && allVideos != null){
+            return allVideos;
+        }else{
+            HashMap<String, ArrayList<MediaInfo>> allFile = new HashMap<>();
+            allFile.putAll(allPhotos);
+            Set<String> keySet = allVideos.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            while (iterator.hasNext()){
+                String key = iterator.next();
+                if (allFile.get(key) != null){
+                    ArrayList<MediaInfo> sourceArray = allFile.get(key);
+                    ArrayList<MediaInfo> videoArray = allVideos.get(key);
+                    sourceArray.addAll(videoArray);
+                    MediaDataUtils.sortByModifiedTime(sourceArray);
+                    allFile.put(key,sourceArray);
+                }else{
+                    allFile.put(key,allVideos.get(key));
+                }
+            }
+            return allFile;
+        }
+    }
 
 }

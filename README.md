@@ -23,7 +23,7 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
-    implementation 'com.github.Devil-Chen:DVMediaSelector:1.1.2'
+    implementation 'com.github.Devil-Chen:DVMediaSelector:1.1.3'
 }
 ```
 
