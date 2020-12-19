@@ -86,37 +86,37 @@ public class FilterAdjustView extends LinearLayout{
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(0, 400, 100, 1);
                     mSeekBar.setValue(contrast);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_contrast);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_contrast);
                 }else if(checkedId == R.id.rb_exposure){// 曝光 -10.0f ~ 10.0f
                     type = ImageFilterType.EXPOSURE;
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(-1000, 1000, 0, 1);
                     mSeekBar.setValue(exposure);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_exposure);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_exposure);
                 }else if(checkedId == R.id.rb_saturation){// 饱和度 0 ~ 2.0f
                     type = ImageFilterType.SATURATION;
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(0, 200, 100, 1);
                     mSeekBar.setValue(saturation);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_saturation);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_saturation);
                 }else if(checkedId == R.id.rb_sharpness){// 锐度 -4.0f ~ 4.0f
                     type = ImageFilterType.SHARPEN;
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(-400, 400, 0, 1);
                     mSeekBar.setValue(sharpness);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_sharpness);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_sharpness);
                 }else if(checkedId == R.id.rb_bright){// 亮度值 -1.0f ~ 1.0f
                     type = ImageFilterType.BRIGHTNESS;
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(-100, 100, 0, 1);
                     mSeekBar.setValue(brightness);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_bright);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_bright);
                 }else if(checkedId == R.id.rb_hue){// 色调 0 ~ 360
                     type = ImageFilterType.HUE;
                     mSeekBar.reset();
                     mSeekBar.setSeekLength(0, 360, 0, 1);
                     mSeekBar.setValue(hue);
-                    mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_hue);
+                    mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_hue);
                 }
 
             }
@@ -138,7 +138,7 @@ public class FilterAdjustView extends LinearLayout{
         mSeekBar.reset();
         mSeekBar.setSeekLength(0, 400, 100, 1);
         mSeekBar.setValue(contrast);
-        mLabel.setBackgroundResource(R.drawable.selector_image_edit_adjust_contrast);
+        mLabel.setBackgroundResource(R.drawable.selector_dv_image_edit_adjust_contrast);
     }
 
     /**

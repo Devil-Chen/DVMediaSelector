@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -297,7 +296,7 @@ public class DVMediaSelectActivity extends DVBaseActivity implements View.OnClic
      */
     private static void startActivityBottomToTop(Activity mActivity,Intent intent){
         mActivity.startActivity(intent);
-        mActivity.overridePendingTransition(R.anim.enter_from_bottom,R.anim.out_to_top);
+        mActivity.overridePendingTransition(R.anim.anim_dv_enter_from_bottom,R.anim.anim_dv_out_to_top);
     }
 
     //--------------------------------------------- 菜单点击事件回调 ----------------------------------------------------------
@@ -329,7 +328,7 @@ public class DVMediaSelectActivity extends DVBaseActivity implements View.OnClic
                 watchMediaFragment.setArguments(bundle);
 
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_show_alpha, R.anim.anim_hidden_alpha)
+                        .setCustomAnimations(R.anim.anim_dv_show_alpha, R.anim.anim_dv_hidden_alpha)
                         .add(R.id.fl_mediaList, watchMediaFragment, WatchMediaFragment.class.getName())
                         .addToBackStack(WatchMediaFragment.class.getName())
                         .commit();
@@ -445,7 +444,7 @@ public class DVMediaSelectActivity extends DVBaseActivity implements View.OnClic
     public void finish() {
         super.finish();
         if (needCleanWithFinish){
-            overridePendingTransition(R.anim.enter_from_left,R.anim.out_to_right);
+            overridePendingTransition(R.anim.anim_dv_enter_from_left,R.anim.anim_dv_out_to_right);
         }
 
     }

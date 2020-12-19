@@ -47,38 +47,38 @@
 
             <RadioButton
                 android:id="@+id/rb_contrast"
-                android:drawableTop="@drawable/selector_image_edit_adjust_contrast"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_contrast"
                 android:text="@string/edit_contrast"
                 android:checked="true"
                 style="@style/ImageEditor_adjust_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/rb_exposure"
-                android:drawableTop="@drawable/selector_image_edit_adjust_exposure"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_exposure"
                 android:text="@string/edit_exposure"
                 style="@style/ImageEditor_adjust_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/rb_saturation"
-                android:drawableTop="@drawable/selector_image_edit_adjust_saturation"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_saturation"
                 android:text="@string/edit_saturation"
                 style="@style/ImageEditor_adjust_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/rb_sharpness"
-                android:drawableTop="@drawable/selector_image_edit_adjust_sharpness"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_sharpness"
                 android:text="@string/edit_sharpness"
                 style="@style/ImageEditor_adjust_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/rb_bright"
-                android:drawableTop="@drawable/selector_image_edit_adjust_bright"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_bright"
                 android:text="@string/edit_brightness"
                 style="@style/ImageEditor_adjust_radiobutton"/>
 
             <RadioButton
                 android:id="@+id/rb_hue"
-                android:drawableTop="@drawable/selector_image_edit_adjust_hue"
+                android:drawableTop="@drawable/selector_dv_image_edit_adjust_hue"
                 android:text="@string/edit_hue"
                 style="@style/ImageEditor_adjust_radiobutton"/>
         </RadioGroup>

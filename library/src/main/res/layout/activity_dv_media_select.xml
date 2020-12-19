@@ -67,7 +67,7 @@
             android:id="@+id/btn_sure"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:background="@drawable/shape_btn_default"
+            android:background="@drawable/shape_dv_btn_default"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"

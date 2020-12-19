@@ -157,7 +157,7 @@ public class MediaSelectorManager {
      */
     private static void startActivityRightToLeft(Activity mActivity,Intent intent){
         mActivity.startActivity(intent);
-        mActivity.overridePendingTransition(R.anim.enter_from_right,R.anim.out_to_left);
+        mActivity.overridePendingTransition(R.anim.anim_dv_enter_from_right,R.anim.anim_dv_out_to_left);
     }
 
     /**
@@ -167,7 +167,7 @@ public class MediaSelectorManager {
      */
     private static void startActivityBottomToTop(Activity mActivity,Intent intent){
         mActivity.startActivity(intent);
-        mActivity.overridePendingTransition(R.anim.enter_from_bottom,R.anim.out_to_top);
+        mActivity.overridePendingTransition(R.anim.anim_dv_enter_from_bottom,R.anim.anim_dv_out_to_top);
     }
 
     /**

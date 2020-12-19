@@ -62,5 +62,5 @@
         android:layout_height="26dip"
         android:scaleType="center"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/btn_layout_filters_bar_close" />
+        android:src="@drawable/btn_dv_layout_filters_bar_close" />
 </LinearLayout>

@@ -32,7 +32,6 @@ import com.devil.library.media.enumtype.DVMediaType;
 import com.devil.library.video.VideoMediaManager;
 import com.devil.library.video.listener.OnVideoTrimListener;
 import com.devil.player.ExoMediaPlayer;
-import com.devil.player.IjkPlayer;
 
 
 import java.util.List;
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 //确定按钮背景色（与Resource只能选择一种）
 //                .sureBtnBgColor(Color.BLUE)
                 //确定按钮所在布局背景色（与color只能选择一种）
-                .sureBtnBgResource(R.drawable.shape_btn_default)
+                .sureBtnBgResource(R.drawable.shape_dv_btn_default)
                 //设置文件临时缓存路径
                 .fileCachePath(this.getCacheDir().getPath())
                 //选择类型

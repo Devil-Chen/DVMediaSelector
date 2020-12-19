@@ -73,11 +73,27 @@ public class DVVideoTrimActivity extends AppCompatActivity implements OnSelectVi
         }
         frameRate = intent.getIntExtra("frameRate",-1);
         bitRate = intent.getIntExtra("bitRate",-1);
+        String backTitle = intent.getStringExtra("backTitle");
+        String sureTitle = intent.getStringExtra("sureTitle");
+        String tipText = intent.getStringExtra("tipText");
 
         trimmerView = findViewById(R.id.trimmerView);
 
         trimmerView.setOnTrimVideoListener(this);
         trimmerView.initVideoByPath(videoPath);
+
+        //设置返回标题
+        if (!TextUtils.isEmpty(backTitle)){
+            trimmerView.setBackTitle(backTitle);
+        }
+        //设置确定标题
+        if(!TextUtils.isEmpty(sureTitle)){
+            trimmerView.setSureTitle(sureTitle);
+        }
+        //设置进度上方提示文字
+        if(!TextUtils.isEmpty(tipText)){
+            trimmerView.setTipText(tipText);
+        }
     }
 
     @Override

@@ -116,6 +116,16 @@ public class DVVideoCropActivity extends AppCompatActivity implements View.OnCli
             finish();
 //            throw new RuntimeException("请先传入视频地址，再打开裁剪界面");
         }
+        String backTitle = intent.getStringExtra("backTitle");
+        String sureTitle = intent.getStringExtra("sureTitle");
+        //设置返回标题
+        if (!TextUtils.isEmpty(backTitle)){
+            btn_back.setText("" + backTitle);
+        }
+        //设置确定标题
+        if(!TextUtils.isEmpty(sureTitle)){
+            btn_sure.setText("" + sureTitle);
+        }
 
         //获取视频宽高
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();

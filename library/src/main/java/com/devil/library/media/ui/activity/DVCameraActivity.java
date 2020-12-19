@@ -329,7 +329,7 @@ public class DVCameraActivity extends DVBaseActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.enter_from_top,R.anim.out_to_bottom);
+        overridePendingTransition(R.anim.anim_dv_enter_from_top,R.anim.anim_dv_out_to_bottom);
     }
 
     @Override

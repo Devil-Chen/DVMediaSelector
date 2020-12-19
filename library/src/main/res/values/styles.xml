@@ -40,17 +40,17 @@
         <item name="android:layout_marginTop">5.0dip</item>
         <item name="android:layout_marginBottom">5.0dip</item>
         <item name="android:maxHeight">@dimen/seekbar_progress_height</item>
-        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:progressDrawable">@drawable/seekbar_dv_progress</item>
         <item name="android:minHeight">@dimen/seekbar_progress_height</item>
-        <item name="android:thumb">@drawable/seekbar_thumb</item>
+        <item name="android:thumb">@drawable/seekbar_dv_thumb</item>
         <item name="android:isScrollContainer">true</item>
         <item name="android:fadeScrollbars">true</item>
     </style>
     <style name="SeekBar.Light" parent="@style/SeekBar">
         <item name="android:layout_marginTop">0.0dip</item>
         <item name="android:layout_marginBottom">0.0dip</item>
-        <item name="android:progressDrawable">@drawable/seekbar_progress_light</item>
-        <item name="android:thumb">@drawable/seekbar_thumb_light</item>
+        <item name="android:progressDrawable">@drawable/seekbar_dv_progress_light</item>
+        <item name="android:thumb">@drawable/seekbar_dv_thumb_light</item>
     </style>
     <style name="ImageEditor_radiobutton">
         <item name="android:layout_weight">1.0</item>
@@ -58,7 +58,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/selector_image_edit</item>
+        <item name="android:textColor">@color/selector_dv_image_edit</item>
         <item name="android:textSize">15sp</item>
     </style>
     <style name="filter_radiobutton">
@@ -67,7 +67,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/selector_image_edit_yellow</item>
+        <item name="android:textColor">@color/selector_dv_image_edit_yellow</item>
         <item name="android:padding">10dp</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -77,7 +77,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/selector_image_edit_yellow</item>
+        <item name="android:textColor">@color/selector_dv_image_edit_yellow</item>
         <item name="android:padding">10dp</item>
         <item name="android:textSize">13sp</item>
     </style>

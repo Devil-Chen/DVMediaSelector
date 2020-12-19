@@ -63,4 +63,7 @@
     <string name="edit_sharpness">锐化</string>
     <string name="edit_brightness">亮度</string>
     <string name="edit_hue">色调</string>
+
+    <string name="dv_sure">确定</string>
+    <string name="dv_back">返回</string>
 </resources>

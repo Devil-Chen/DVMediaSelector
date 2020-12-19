@@ -18,6 +18,8 @@ public class MediaInfo implements Serializable {
     public  long fileSize;
     //文件名称
     public String fileName;
+    //最后修改时间
+    public long modifiedTime;
 
     /**
      * 创建视频信息实体
@@ -28,13 +30,14 @@ public class MediaInfo implements Serializable {
      * @param fileName 文件名称
      * @return
      */
-    public static MediaInfo createVideoInfo(String filePath,String thumbPath,int duration, long fileSize,String fileName){
+    public static MediaInfo createVideoInfo(String filePath,String thumbPath,int duration, long fileSize,String fileName,long modifiedTime){
         MediaInfo info = new MediaInfo();
         info.filePath = filePath;
         info.thumbPath = thumbPath;
         info.duration = duration;
         info.fileSize = fileSize;
         info.fileName = fileName;
+        info.modifiedTime = modifiedTime;
         return info;
     }
 
@@ -45,12 +48,13 @@ public class MediaInfo implements Serializable {
      * @param fileName 文件名称
      * @return
      */
-    public static MediaInfo createPhotoInfo(String filePath, long fileSize,String fileName){
+    public static MediaInfo createPhotoInfo(String filePath, long fileSize,String fileName,long modifiedTime){
         MediaInfo info = new MediaInfo();
         info.filePath = filePath;
         info.thumbPath = filePath;
         info.fileSize = fileSize;
         info.fileName = fileName;
+        info.modifiedTime = modifiedTime;
         return info;
     }
 

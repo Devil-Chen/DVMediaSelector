@@ -180,7 +180,7 @@ public class VideoMediaManager {
 
 
     /**
-     * 开启视频裁剪界面
+     * 开启视频剪辑界面
      * @param mActivity 上下文
      * @param videoPath 视频地址
      * @param savePath 保存地址
@@ -199,7 +199,7 @@ public class VideoMediaManager {
     }
 
     /**
-     * 开启视频裁剪界面
+     * 开启视频剪辑界面
      * @param mActivity 上下文
      * @param videoPath 视频地址
      * @param savePath 保存地址
@@ -222,6 +222,35 @@ public class VideoMediaManager {
     }
 
     /**
+     * 开启视频剪辑界面
+     * @param mActivity 上下文
+     * @param videoPath 视频地址
+     * @param savePath 保存地址
+     * @param frameRate 输出视频帧率
+     * @param bitRate 输出视频码率
+     * @param backTitle 返回按钮文字
+     * @param sureTitle 确定按钮文字
+     * @param tipText 设置进度上方提示文字
+     * @param listener 剪辑监听
+     */
+    public static void openVideoTrimActivity(Activity mActivity, String videoPath, String savePath,int frameRate,int bitRate,String backTitle,String sureTitle,String tipText, OnVideoTrimListener listener){
+        Intent intent = new Intent(mActivity,DVVideoTrimActivity.class);
+        intent.putExtra("videoPath",videoPath);
+        intent.putExtra("savePath",savePath);
+        intent.putExtra("frameRate",frameRate);
+        intent.putExtra("bitRate",bitRate);
+        intent.putExtra("backTitle",backTitle);
+        intent.putExtra("sureTitle",sureTitle);
+        intent.putExtra("tipText",tipText);
+
+        if (listener != null){
+            DVVideoTrimActivity.videoTrimListener = listener;
+        }
+
+        mActivity.startActivity(intent);
+    }
+
+    /**
      * 开启视频裁剪界面
      * @param mActivity 上下文
      * @param videoPath 视频地址
@@ -232,6 +261,54 @@ public class VideoMediaManager {
         Intent intent = new Intent(mActivity,DVVideoCropActivity.class);
         intent.putExtra("videoPath",videoPath);
         intent.putExtra("savePath",savePath);
+        if (listener != null){
+            DVVideoCropActivity.videoTrimListener = listener;
+        }
+
+        mActivity.startActivity(intent);
+    }
+
+    /**
+     * 开启视频裁剪界面
+     * @param mActivity 上下文
+     * @param videoPath 视频地址
+     * @param savePath 保存地址
+     * @param widthRatio 宽高比中的宽
+     * @param heightRatio 宽高比中的高
+     * @param listener 剪辑监听
+     */
+    public static void openVideoCropActivity(Activity mActivity, String videoPath, String savePath,int widthRatio,int heightRatio, OnVideoTrimListener listener){
+        Intent intent = new Intent(mActivity,DVVideoCropActivity.class);
+        intent.putExtra("videoPath",videoPath);
+        intent.putExtra("savePath",savePath);
+        intent.putExtra("widthRatio",widthRatio);
+        intent.putExtra("heightRatio",heightRatio);
+        if (listener != null){
+            DVVideoCropActivity.videoTrimListener = listener;
+        }
+
+        mActivity.startActivity(intent);
+    }
+
+    /**
+     * 开启视频裁剪界面
+     * @param mActivity 上下文
+     * @param videoPath 视频地址
+     * @param savePath 保存地址
+     * @param widthRatio 宽高比中的宽
+     * @param heightRatio 宽高比中的高
+     * @param backTitle 返回按钮文字
+     * @param sureTitle 确定按钮文字
+     * @param listener 剪辑监听
+     */
+    public static void openVideoCropActivity(Activity mActivity, String videoPath, String savePath,int widthRatio,int heightRatio,String backTitle,String sureTitle, OnVideoTrimListener listener){
+        Intent intent = new Intent(mActivity,DVVideoCropActivity.class);
+        intent.putExtra("videoPath",videoPath);
+        intent.putExtra("savePath",savePath);
+        intent.putExtra("widthRatio",widthRatio);
+        intent.putExtra("heightRatio",heightRatio);
+        intent.putExtra("backTitle",backTitle);
+        intent.putExtra("sureTitle",sureTitle);
         if (listener != null){
             DVVideoCropActivity.videoTrimListener = listener;
         }

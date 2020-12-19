@@ -136,7 +136,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics()));
         iconMargin = a.getDimensionPixelSize(R.styleable.JCameraView_iconMargin, (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP, 15, getResources().getDisplayMetrics()));
-        iconSrc = a.getResourceId(R.styleable.JCameraView_iconSrc, R.drawable.ic_camera);
+        iconSrc = a.getResourceId(R.styleable.JCameraView_iconSrc, R.drawable.ic_dv_camera);
         iconLeft = a.getResourceId(R.styleable.JCameraView_iconLeft, 0);
         iconRight = a.getResourceId(R.styleable.JCameraView_iconRight, 0);
         duration = a.getInteger(R.styleable.JCameraView_duration_max, 10 * 1000);       //没设置默认为10s
@@ -647,15 +647,15 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         }
         switch (type_flash) {
             case TYPE_FLASH_AUTO:
-                mFlashLamp.setImageResource(R.drawable.ic_flash_auto);
+                mFlashLamp.setImageResource(R.drawable.ic_dv_flash_auto);
                 machine.flash(Camera.Parameters.FLASH_MODE_AUTO);
                 break;
             case TYPE_FLASH_ON:
-                mFlashLamp.setImageResource(R.drawable.ic_flash_on);
+                mFlashLamp.setImageResource(R.drawable.ic_dv_flash_on);
                 machine.flash(Camera.Parameters.FLASH_MODE_ON);
                 break;
             case TYPE_FLASH_OFF:
-                mFlashLamp.setImageResource(R.drawable.ic_flash_off);
+                mFlashLamp.setImageResource(R.drawable.ic_dv_flash_off);
                 machine.flash(Camera.Parameters.FLASH_MODE_OFF);
                 break;
         }

@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_flash_on"/>
+                android:src="@drawable/ic_dv_flash_on"/>
 
             <ImageView
                 android:id="@+id/image_switch"

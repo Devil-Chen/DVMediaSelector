@@ -33,7 +33,6 @@ import com.cgfay.filter.glfilter.resource.ResourceJsonCodec;
 import com.cgfay.filter.glfilter.resource.bean.ResourceData;
 import com.devil.library.camera.CaptureLayout;
 import com.devil.library.camera.FoucsView;
-import com.devil.library.camera.adapter.FilterAdapter;
 import com.devil.library.camera.helper.CameraPreviewPresenter;
 import com.devil.library.camera.listener.CaptureListener;
 import com.devil.library.camera.listener.ClickListener;
@@ -52,7 +51,6 @@ import com.devil.library.media.view.FilterToolView;
 import com.devil.library.media.view.TipLoadDialog;
 
 import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -872,10 +870,10 @@ public class DVCameraView extends FrameLayout implements View.OnClickListener {
      */
     private void setFlashRes() {
         if (flashStatus){
-            mFlashLamp.setImageResource(R.drawable.ic_flash_on);
+            mFlashLamp.setImageResource(R.drawable.ic_dv_flash_on);
             mPreviewPresenter.setFlashLight(true);
         }else{
-            mFlashLamp.setImageResource(R.drawable.ic_flash_off);
+            mFlashLamp.setImageResource(R.drawable.ic_dv_flash_off);
             mPreviewPresenter.setFlashLight(false);
         }
     }

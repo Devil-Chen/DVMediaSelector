@@ -30,7 +30,7 @@
                 android:id="@+id/filter_thumb_selected_icon" 
                 android:layout_width="34.0dip" 
                 android:layout_height="34.0dip" 
-                android:src="@drawable/selector_filter_selected" />
+                android:src="@drawable/selector_dv_filter_selected" />
         </FrameLayout>
     </FrameLayout>
     <TextView 

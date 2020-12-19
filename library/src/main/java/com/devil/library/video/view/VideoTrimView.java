@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,6 +66,10 @@ public class VideoTrimView extends FrameLayout {
   private int mThumbsTotalCount;
   //进度显示
   private SeekBar sb_playProgress;
+  //返回按钮
+  private TextView btn_back;
+  //确定按钮
+  private TextView btn_sure;
 
   public VideoTrimView(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
@@ -91,6 +96,8 @@ public class VideoTrimView extends FrameLayout {
     mVideoShootTipTv = findViewById(R.id.video_shoot_tip);
     mVideoThumbRecyclerView = findViewById(R.id.video_frames_recyclerView);
     sb_playProgress = findViewById(R.id.sb_playProgress);
+    btn_back = findViewById(R.id.cancelBtn);
+    btn_sure = findViewById(R.id.finishBtn);
     layoutManager = new DVLinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false );
     mVideoThumbRecyclerView.setLayoutManager(layoutManager);
     mVideoThumbAdapter = new VideoTrimAdapter(mContext);
@@ -98,6 +105,37 @@ public class VideoTrimView extends FrameLayout {
 
 
     setUpListeners();
+  }
+
+  /**
+   * 设置返回标题
+   * @param backTitle
+   */
+  public void setBackTitle(String backTitle){
+    if (btn_back != null){
+      btn_back.setText("" + backTitle);
+    }
+  }
+
+  /**
+   * 设置确定标题
+   * @param sureTitle
+   */
+  public void setSureTitle(String sureTitle){
+    if (btn_sure != null){
+      btn_sure.setText("" + sureTitle);
+    }
+  }
+
+  /**
+   * 设置进度上方提示文字
+   * @param tipText
+   */
+  public void setTipText(String tipText){
+    if (mVideoShootTipTv != null){
+      mVideoShootTipTv.setText("" + tipText);
+    }
+
   }
 
   /**
@@ -259,14 +297,14 @@ public class VideoTrimView extends FrameLayout {
    */
   private void setUpListeners() {
     //取消
-    findViewById(R.id.cancelBtn).setOnClickListener(new OnClickListener() {
+    btn_back.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
         onCancelClicked();
       }
     });
     //完成
-    findViewById(R.id.finishBtn).setOnClickListener(new OnClickListener() {
+    btn_sure.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
         onSaveClicked();
