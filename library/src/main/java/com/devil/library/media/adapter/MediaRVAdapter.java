@@ -73,7 +73,7 @@ public class MediaRVAdapter extends BaseRVAdapter<EasyRVHolder,MediaInfo> {
      * @return
      */
     private boolean needCamera(){
-        return config.needCamera && !config.multiSelect;
+        return config.needCamera ; //&& !config.multiSelect;
     }
 
     /**
