@@ -4,7 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.animation.LinearInterpolator;
 
@@ -28,7 +28,7 @@ import android.view.animation.LinearInterpolator;
  * </pre>
  */
 
-public class FadeInTextView extends android.support.v7.widget.AppCompatTextView
+public class FadeInTextView extends androidx.appcompat.widget.AppCompatTextView
 {
     private Rect textRect = new Rect();
 

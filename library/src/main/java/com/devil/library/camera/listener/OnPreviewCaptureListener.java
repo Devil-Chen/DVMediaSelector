@@ -1,7 +1,7 @@
 package com.devil.library.camera.listener;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.IntDef;
+import androidx.annotation.RestrictTo;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

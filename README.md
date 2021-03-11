@@ -26,6 +26,9 @@ allprojects {
 **在项目bulid.gradle添加**
 ```
 dependencies {
+    //Androidx
+    implementation 'com.github.Devil-Chen:DVMediaSelector:2.1.0'
+    //Android Support
     implementation 'com.github.Devil-Chen:DVMediaSelector:2.0.3'
 }
 ```

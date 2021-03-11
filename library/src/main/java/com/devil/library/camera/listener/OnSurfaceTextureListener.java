@@ -1,7 +1,7 @@
 package com.devil.library.camera.listener;
 
 import android.graphics.SurfaceTexture;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 
 /**

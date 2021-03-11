@@ -2,14 +2,12 @@ package com.devil.library.video.view;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
-import android.support.v4.widget.ViewDragHelper;
+
+import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;

@@ -4,7 +4,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.devil.library.camera.listener.OnRecordListener;
 import com.devil.library.camera.params.AudioParams;

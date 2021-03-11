@@ -1,30 +1,24 @@
 package com.devil.library.media.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.cgfay.filter.glfilter.adjust.bean.AdjustParam;
 import com.cgfay.filter.glfilter.beauty.bean.BeautyParam;
-import com.cgfay.filter.glfilter.resource.FilterHelper;
 import com.cgfay.filter.glfilter.resource.bean.ResourceData;
 import com.cgfay.filter.widget.GLImageSurfaceView;
 import com.cgfay.uitls.utils.BitmapUtils;
-import com.devil.library.camera.adapter.FilterAdapter;
 import com.devil.library.media.R;
 import com.devil.library.media.enumtype.ImageFilterType;
 import com.devil.library.media.listener.OnFilterActionListener;
